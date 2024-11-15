@@ -84,7 +84,7 @@ const LoginForm = () => {
           Login as Admin
         </label>
       </div>
-      <p>{errors?.root?.random?.message}</p>
+      <p className="mb-4 text-red-500">{errors?.root?.random?.message}</p>
       <button className="w-full bg-primary text-white py-3 rounded-lg mb-4">
         Sign in
       </button>
