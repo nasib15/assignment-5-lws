@@ -10,7 +10,7 @@ export default {
         // primary: '#7D49F8',
       },
       fontFamily: {
-        Jaro: "Oswald, ui-serif",
+        jaro: "Jaro, serif",
       },
     },
   },
