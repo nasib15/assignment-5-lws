@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import CircularProgressbar from "../assets/icons/circular-progressbar.svg";
 import LogoWhite from "../assets/logo-white.svg";
-import Question from "../components/Result/Question";
+import Question from "../components/result/Question";
 
 const ResultPage = () => {
   return (

@@ -1,7 +1,7 @@
-import Footer from "../components/Home/Footer";
-import Navbar from "../components/Home/Navbar";
-import ProfileBanner from "../components/Home/ProfileBanner";
-import QuizCard from "../components/Home/QuizCard";
+import Footer from "../components/home/Footer";
+import Navbar from "../components/home/Navbar";
+import ProfileBanner from "../components/home/ProfileBanner";
+import QuizCard from "../components/home/QuizCard";
 
 const Home = () => {
   return (

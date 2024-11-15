@@ -7,7 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ResultPage from "./pages/ResultPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import QuizSetEntry from "./pages/admin/QuizSetEntry";
-import QuizSetPage from "./pages/admin/QuizsetPage";
+import QuizSetPage from "./pages/admin/QuizSetPage";
 
 function App() {
   return (

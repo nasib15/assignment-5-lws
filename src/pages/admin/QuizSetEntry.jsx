@@ -1,6 +1,6 @@
 import Avatar from "../../assets/avater.webp";
 import LogoWhite from "../../assets/logo-white.svg";
-import Question from "../../components/Result/Question";
+import Question from "../../components/result/Question";
 import { ArrowIcon } from "../../components/SVG/Icon";
 
 const QuizSetEntry = () => {

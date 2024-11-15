@@ -1,6 +1,6 @@
 import Logo from "../assets/logo.svg";
-import LeaderboardRow from "../components/Leaderboard/LeaderboardRow";
-import MyLeaderboardCard from "../components/Leaderboard/MyLeaderboardCard";
+import LeaderboardRow from "../components/leaderboard/LeaderboardRow";
+import MyLeaderboardCard from "../components/leaderboard/MyLeaderboardCard";
 
 const Leaderboard = () => {
   return (
