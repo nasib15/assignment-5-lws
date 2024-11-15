@@ -6,6 +6,7 @@ import QuizPage from "./pages/QuizPage";
 import RegisterPage from "./pages/RegisterPage";
 import ResultPage from "./pages/ResultPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import QuizSetEntry from "./pages/admin/QuizSetEntry";
 import QuizSetPage from "./pages/admin/QuizsetPage";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/quizzes" element={<QuizPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/quizset" element={<QuizSetPage />} />
+        <Route path="/admin/quizsetentry" element={<QuizSetEntry />} />
       </Routes>
     </>
   );
