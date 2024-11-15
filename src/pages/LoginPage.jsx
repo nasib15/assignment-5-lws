@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import LoginLogo from "../assets/Saly-1.png";
+import { Link } from "react-router-dom";
+import LoginBanner from "../assets/Saly-1.png";
 import Logo from "../assets/logo.svg";
 
 const LoginPage = () => {
@@ -8,7 +9,7 @@ const LoginPage = () => {
       <div className="flex min-h-screen">
         <div className="hidden lg:flex lg:w-1/2 bg-primary flex-col justify-between p-12 relative">
           <div className="text-white">
-            <img src={LoginLogo} alt="Illustration" className="mx-auto" />
+            <img src={LoginBanner} alt="Illustration" className="mx-auto" />
 
             <h2 className="text-3xl font-bold mb-4">Sign in Now</h2>
             <p className="text-xl mb-4">Boost Your Learning Capabilities</p>
@@ -79,9 +80,9 @@ const LoginPage = () => {
             <div className="mt-8">
               <p className="text-center">
                 No Account ?{" "}
-                <a href="#" className="text-primary">
+                <Link to="/register" className="text-primary">
                   Sign up
-                </a>
+                </Link>
               </p>
             </div>
           </div>
