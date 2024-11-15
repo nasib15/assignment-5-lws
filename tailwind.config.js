@@ -10,7 +10,7 @@ export default {
         // primary: '#7D49F8',
       },
       fontFamily: {
-        jaro: "Jaro, serif",
+        jaro: ["Jaro", "serif"],
       },
     },
   },
