@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
-
 /** @type {import('tailwindcss').Config} */
+import aspectRatio from "@tailwindcss/aspect-ratio";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -9,7 +9,10 @@ export default {
         primary: "#28194b",
         // primary: '#7D49F8',
       },
+      fontFamily: {
+        Jaro: "Oswald, ui-serif",
+      },
     },
   },
-  plugins: [require("@tailwindcss/aspect-ratio")],
+  plugins: [aspectRatio],
 };
