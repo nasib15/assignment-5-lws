@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import Avatar from "../../assets/avater.webp";
 import Logo from "../../assets/logo-white.svg";
-import { Icon } from "../../components/SVG/Icon";
+import { Icon, PlusIcon } from "../../components/SVG/Icon";
 
 const AdminDashboard = () => {
   return (
@@ -74,23 +75,10 @@ const AdminDashboard = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <a href="./quiz_set_page.html" className="group">
+          <Link to="/admin/quizset" className="group">
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 ">
               <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
+                <PlusIcon />
               </div>
               <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-all">
                 Create a new quiz
@@ -99,7 +87,7 @@ const AdminDashboard = () => {
                 Build from the ground up
               </p>
             </div>
-          </a>
+          </Link>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 group cursor-pointer">
             <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
