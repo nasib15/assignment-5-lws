@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import QuizPage from "./pages/QuizPage";
 import RegisterPage from "./pages/RegisterPage";
 import ResultPage from "./pages/ResultPage";
-
+import AdminDashboard from "./pages/admin/AdminDashboard";
 function App() {
   return (
     <>
@@ -16,6 +16,7 @@ function App() {
         <Route path="/result" element={<ResultPage />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/quizzes" element={<QuizPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </>
   );
