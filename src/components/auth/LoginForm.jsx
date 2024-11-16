@@ -54,6 +54,7 @@ const LoginForm = () => {
       <div className="mb-4">
         <Field
           label="Enter your username or email address"
+          htmlFor="email"
           error={errors.email}
         >
           <input
@@ -70,7 +71,11 @@ const LoginForm = () => {
         </Field>
       </div>
       <div className="mb-6 relative">
-        <Field label="Enter your Password" error={errors.password}>
+        <Field
+          label="Enter your Password"
+          htmlFor="password"
+          error={errors.password}
+        >
           <input
             {...register("password", {
               required: "Password is required",
@@ -91,16 +96,9 @@ const LoginForm = () => {
           </div>
         </Field>
       </div>
-      <div className="mb-6 flex gap-2 items-center">
-        <input
-          type="checkbox"
-          id="admin"
-          className="px-4 py-3 rounded-lg border border-gray-300"
-        />
-        <label htmlFor="admin" className="block ">
-          Login as Admin
-        </label>
-      </div>
+
+      {/* removed the admin checkbox because in real life if any admins login into the system, it will be automatically logged in as admin */}
+
       <p className="mb-4 text-red-500">{errors?.root?.random?.message}</p>
       <button className="w-full bg-primary text-white py-3 rounded-lg mb-4">
         Sign in

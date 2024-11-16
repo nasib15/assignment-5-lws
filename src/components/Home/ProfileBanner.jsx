@@ -1,4 +1,4 @@
-import ProfilePic from "../../assets/avater.webp";
+import ProfilePic from "../../assets/profile.png";
 import useAuth from "../../hooks/useAuth";
 
 const ProfileBanner = () => {

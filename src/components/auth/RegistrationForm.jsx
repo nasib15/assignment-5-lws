@@ -30,13 +30,22 @@ const RegistrationForm = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        { full_name, email, password }
-      );
-
-      if (response.status === 201) {
-        navigate("/login");
+      if (admin) {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/register`,
+          { full_name, email, password, role: "admin" }
+        );
+        if (response.status === 201) {
+          navigate("/login");
+        }
+      } else {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/register`,
+          { full_name, email, password }
+        );
+        if (response.status === 201) {
+          navigate("/login");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -51,7 +60,7 @@ const RegistrationForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="">
         <div className="mb-4">
-          <Field label="Full Name" error={errors.full_name}>
+          <Field label="Full Name" htmlFor="full_name" error={errors.full_name}>
             <input
               {...register("full_name", {
                 required: "Full name is required",
@@ -67,7 +76,7 @@ const RegistrationForm = () => {
         </div>
 
         <div className="mb-4">
-          <Field label="Email" error={errors.email}>
+          <Field label="Email" htmlFor="email" error={errors.email}>
             <input
               {...register("email", {
                 required: "Email is required",
@@ -85,7 +94,11 @@ const RegistrationForm = () => {
 
       <div className="flex  gap-4">
         <div className="mb-6 relative">
-          <Field label="Enter your Password" error={errors.password}>
+          <Field
+            label="Enter your Password"
+            htmlFor="password"
+            error={errors.password}
+          >
             <input
               {...register("password", {
                 required: "Password is required",
@@ -112,7 +125,11 @@ const RegistrationForm = () => {
         </div>
 
         <div className="mb-6 relative">
-          <Field label="Confirm Password" error={errors.confirm_password}>
+          <Field
+            label="Confirm Password"
+            htmlFor="confirm_password"
+            error={errors.confirm_password}
+          >
             <input
               {...register("confirm_password", {
                 required: "Confirm password is required",
@@ -136,14 +153,14 @@ const RegistrationForm = () => {
       </div>
 
       <div className="mb-6 flex gap-2 items-center">
-        <input
-          type="checkbox"
-          id="admin"
-          className="px-4 py-3 rounded-lg border border-gray-300"
-        />
-        <label htmlFor="admin" className="block ">
-          Register as Admin
-        </label>
+        <Field label="Register as Admin" htmlFor="admin">
+          <input
+            {...register("admin")}
+            type="checkbox"
+            id="admin"
+            className="px-4 py-3 rounded-lg border border-gray-300"
+          />
+        </Field>
       </div>
 
       <button
