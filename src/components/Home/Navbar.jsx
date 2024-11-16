@@ -6,7 +6,7 @@ import useAuth from "../../hooks/useAuth";
 const Navbar = () => {
   const { auth, setAuth } = useAuth();
   return (
-    <header className="flex justify-between items-center mb-12">
+    <header className="flex justify-between items-center mb-8">
       <img src={Logo} className="h-7" />
       <div className="flex items-center gap-3">
         {auth?.user ? (

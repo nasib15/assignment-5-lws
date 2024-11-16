@@ -44,7 +44,7 @@ const LoginForm = () => {
       console.error(error);
       setError("root.random", {
         type: "random",
-        message: `User with email ${formData.email} is not found`,
+        message: `User with email or username ${formData.email} is not found`,
       });
     }
   };

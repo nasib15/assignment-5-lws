@@ -1,7 +1,7 @@
 import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
 import ProfileBanner from "../components/home/ProfileBanner";
-import QuizCard from "../components/home/QuizCard";
+import QuizList from "../components/home/QuizList";
 import useAuth from "../hooks/useAuth";
 
 const Home = () => {
@@ -23,10 +23,7 @@ const Home = () => {
 
             {/* Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <QuizCard key={index} />
-              ))}
-
+              <QuizList />
               {/* <a
                 href="./quiz_page.html"
                 className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow max-h-[450px] cursor-pointer group relative"
