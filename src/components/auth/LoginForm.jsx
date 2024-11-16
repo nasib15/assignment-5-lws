@@ -1,6 +1,9 @@
 import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import hideIcon from "../../assets/hide.png";
+import showIcon from "../../assets/view.png";
 import useAuth from "../../hooks/useAuth";
 import Field from "./Field";
 
@@ -13,6 +16,12 @@ const LoginForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const { setAuth } = useAuth();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmit = async (formData) => {
     try {
@@ -32,6 +41,7 @@ const LoginForm = () => {
         }
       }
     } catch (error) {
+      console.error(error);
       setError("root.random", {
         type: "random",
         message: `User with email ${formData.email} is not found`,
@@ -59,19 +69,26 @@ const LoginForm = () => {
           />
         </Field>
       </div>
-      <div className="mb-6">
+      <div className="mb-6 relative">
         <Field label="Enter your Password" error={errors.password}>
           <input
             {...register("password", {
               required: "Password is required",
             })}
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.password ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Password"
           />
+          <div className="absolute top-12 right-3 cursor-pointer">
+            <img
+              src={showPassword ? hideIcon : showIcon}
+              alt="show password"
+              onClick={togglePasswordVisibility}
+            />
+          </div>
         </Field>
       </div>
       <div className="mb-6 flex gap-2 items-center">
