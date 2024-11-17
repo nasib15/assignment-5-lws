@@ -2,11 +2,14 @@ import Avatar from "../../assets/avater.webp";
 import LogoWhite from "../../assets/logo-white.svg";
 import Question from "../../components/result/Question";
 import { ArrowIcon } from "../../components/SVG/Icon";
+import useAuth from "../../hooks/useAuth";
 
 const QuizSetEntry = () => {
+  const { auth } = useAuth();
+  console.log(auth);
   return (
-    <body className="bg-[#F5F3FF] min-h-screen flex">
-      <aside className="hidden md:w-64 bg-primary p-6 md:flex flex-col">
+    <div className="bg-[#F5F3FF] min-h-screen flex">
+      {/* <aside className="hidden md:w-64 bg-primary p-6 md:flex flex-col">
         <div className="mb-10">
           <img src={LogoWhite} className="h-7" />
         </div>
@@ -66,7 +69,7 @@ const QuizSetEntry = () => {
           />
           <span className="text-white font-semibold">Saad Hasan</span>
         </div>
-      </aside>
+      </aside> */}
 
       <main className="md:flex-grow px-4 sm:px-6 lg:px-8 py-8">
         <div>
@@ -219,7 +222,7 @@ const QuizSetEntry = () => {
           </div>
         </div>
       </main>
-    </body>
+    </div>
   );
 };
 export default QuizSetEntry;

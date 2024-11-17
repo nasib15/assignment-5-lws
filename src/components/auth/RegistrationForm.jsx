@@ -153,14 +153,15 @@ const RegistrationForm = () => {
       </div>
 
       <div className="mb-6 flex gap-2 items-center">
-        <Field label="Register as Admin" htmlFor="admin">
-          <input
-            {...register("admin")}
-            type="checkbox"
-            id="admin"
-            className="px-4 py-3 rounded-lg border border-gray-300"
-          />
-        </Field>
+        <input
+          {...register("admin")}
+          type="checkbox"
+          id="admin"
+          className="px-4 py-3 rounded-lg border border-gray-300"
+        />
+        <label htmlFor="admin" className="block ">
+          Register as Admin
+        </label>
       </div>
 
       <button

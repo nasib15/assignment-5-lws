@@ -5,6 +5,10 @@ import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
   const { auth, setAuth } = useAuth();
+  const { user } = auth;
+
+  const isAdmin = user?.role === "admin";
+
   return (
     <header className="flex justify-between items-center mb-8">
       <Link to="/">
@@ -12,9 +16,19 @@ const Navbar = () => {
       </Link>
       <div className="flex items-center gap-3">
         {auth?.user ? (
-          <button>
-            <img src={ProfilePic} className="w-10 h-10 rounded-full" />
-          </button>
+          <>
+            {isAdmin && (
+              <Link
+                to="/admin/dashboard"
+                className="px-4 py-2 rounded hover:bg-primary hover:text-white transition-colors font-jaro"
+              >
+                Dashboard
+              </Link>
+            )}
+            <button>
+              <img src={ProfilePic} className="w-10 h-10 rounded-full" />
+            </button>
+          </>
         ) : (
           <Link
             to="/login"

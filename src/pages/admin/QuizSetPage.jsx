@@ -6,7 +6,7 @@ import { BackIcon } from "../../components/SVG/Icon";
 const QuizSetPage = () => {
   return (
     <div className="bg-[#F5F3FF] min-h-screen flex">
-      <aside className="hidden md:w-64 bg-primary p-6 md:flex flex-col">
+      {/* <aside className="hidden md:w-64 bg-primary p-6 md:flex flex-col">
         <div className="mb-10">
           <img src={LogoWhite} className="h-7" />
         </div>
@@ -66,7 +66,7 @@ const QuizSetPage = () => {
           />
           <span className="text-white font-semibold">Saad Hasan</span>
         </div>
-      </aside>
+      </aside> */}
 
       <main className="md:flex-grow px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

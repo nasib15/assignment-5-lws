@@ -8,6 +8,7 @@ import ResultPage from "./pages/ResultPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import QuizSetEntry from "./pages/admin/QuizSetEntry";
 import QuizSetPage from "./pages/admin/QuizSetPage";
+import AdminRoute from "./routes/AdminRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
           <Route path="/result" element={<ResultPage />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/quiz/:id" element={<QuizPage />} />
+        </Route>
+        <Route element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/quizset" element={<QuizSetPage />} />
           <Route path="/admin/quizsetentry" element={<QuizSetEntry />} />
