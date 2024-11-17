@@ -16,7 +16,7 @@ const QuizList = () => {
   return (
     <>
       {quizzes?.map((quiz) => (
-        <QuizCard key={quiz._id} quiz={quiz} />
+        <QuizCard key={quiz.id} quiz={quiz} />
       ))}
     </>
   );

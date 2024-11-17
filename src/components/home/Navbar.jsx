@@ -7,7 +7,9 @@ const Navbar = () => {
   const { auth, setAuth } = useAuth();
   return (
     <header className="flex justify-between items-center mb-8">
-      <img src={Logo} className="h-7" />
+      <Link to="/">
+        <img src={Logo} className="h-7" />
+      </Link>
       <div className="flex items-center gap-3">
         {auth?.user ? (
           <button>

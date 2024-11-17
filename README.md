@@ -1,6 +1,6 @@
-# Assignment - 4 (LWS)
+# Assignment - 5 (LWS)
 
-## Live Link: https://product-list-assignment-4-lws.vercel.app/
+## Live Link: https://quiz-app-assignment-5-lws.vercel.app/
 
 # Requirements:
 
