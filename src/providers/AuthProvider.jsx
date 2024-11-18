@@ -1,8 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "../contexts";
 
 const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
+  const localStorageAuth = localStorage.getItem("auth");
+
+  const [auth, setAuth] = useState(
+    localStorageAuth ? JSON.parse(localStorageAuth) : {}
+  );
+
+  // Update localstorage whenever auth changes
+  useEffect(() => {
+    if (Object.keys(auth).length) {
+      localStorage.setItem("auth", JSON.stringify(auth));
+    } else {
+      localStorage.removeItem("auth");
+    }
+  }, [auth]);
+
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}

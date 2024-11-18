@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 const Home = () => {
   const { auth } = useAuth();
   console.log(auth);
+
   return (
     <div className="bg-[#F5F3FF] min-h-screen">
       <div className="container mx-auto py-3">

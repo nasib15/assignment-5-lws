@@ -1,7 +1,44 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { actions } from "../../actions";
 import { Icon, PlusIcon } from "../../components/SVG/Icon";
+import useAdminQuiz from "../../hooks/useAdminQuiz";
+import useAxios from "../../hooks/useAxios";
 
 const AdminDashboard = () => {
+  const { state, dispatch } = useAdminQuiz();
+  const { api } = useAxios();
+
+  console.log(state);
+
+  useEffect(() => {
+    dispatch({ type: actions.adminQuiz.DATA_FETCHING });
+
+    const fetchQuiz = async () => {
+      try {
+        const response = await api.get(
+          `${import.meta.env.VITE_API_URL}/admin/quizzes`
+        );
+
+        console.log(response);
+
+        if (response.status === 200) {
+          dispatch({
+            type: actions.adminQuiz.DATA_FETCHED,
+            data: response.data,
+          });
+        }
+      } catch (error) {
+        dispatch({ type: actions.adminQuiz.DATA_FETCHING_ERROR, error });
+
+        toast.error(state?.error.response?.data?.message);
+      }
+    };
+
+    fetchQuiz();
+  }, [api, dispatch, state?.error.response?.data?.message]);
+
   return (
     <main className="flex-grow p-10">
       <header className="mb-8">

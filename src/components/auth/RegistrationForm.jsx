@@ -58,7 +58,7 @@ const RegistrationForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="">
+      <div>
         <div className="mb-4">
           <Field label="Full Name" htmlFor="full_name" error={errors.full_name}>
             <input
@@ -152,7 +152,7 @@ const RegistrationForm = () => {
         </div>
       </div>
 
-      <div className="mb-6 flex gap-2 items-center">
+      <div className="mb-3 flex gap-2 items-center">
         <input
           {...register("admin")}
           type="checkbox"
@@ -163,6 +163,9 @@ const RegistrationForm = () => {
           Register as Admin
         </label>
       </div>
+      <p className="text-red-500 text-sm mb-4">
+        {errors.root?.random?.message}
+      </p>
 
       <button
         type="submit"

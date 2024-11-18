@@ -3,6 +3,7 @@ import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
 import useAuth from "../hooks/useAuth";
 import QuizProvider from "../providers/QuizProvider";
+import ResultProvider from "../providers/ResultProvider";
 
 const PrivateRoute = () => {
   const { auth } = useAuth();
@@ -13,7 +14,9 @@ const PrivateRoute = () => {
           <div className="container mx-auto py-3">
             <Navbar />
             <QuizProvider>
-              <Outlet />
+              <ResultProvider>
+                <Outlet />
+              </ResultProvider>
             </QuizProvider>
             <Footer />
           </div>

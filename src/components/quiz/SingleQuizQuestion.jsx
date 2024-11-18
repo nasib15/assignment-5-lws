@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { actions } from "../../actions";
 import useAxios from "../../hooks/useAxios";
 import useQuiz from "../../hooks/useQuiz";
@@ -10,6 +12,7 @@ const SingleQuizQuestion = ({
   const { state, dispatch } = useQuiz();
   const { api } = useAxios();
   const [randomizedOptions, setRandomizedOptions] = useState([]);
+  const navigate = useNavigate();
 
   const questions = state?.quiz?.data?.questions || [];
   const questionID = questions[currentQuestionIndex]?.id;
@@ -68,14 +71,19 @@ const SingleQuizQuestion = ({
         { answers: state.answers }
       );
 
+      //   navigate(`/result/${state?.quiz?.data?.id}`);
       if (response.status === 200) {
         dispatch({ type: actions.quiz.ANSWER_SUBMITTED, data: state.answers });
+        navigate(`/result/${response?.data?.data?.quiz?.id}`);
       }
     } catch (error) {
+      console.log(error);
       dispatch({
-        type: actions.quiz.DATA_FETCHING_ERROR,
+        type: actions.quiz.ANSWER_SUBMITTING_ERROR,
         error: error.response?.data?.message || "Failed to submit quiz",
       });
+
+      toast.error(state?.error || "Failed to submit quiz");
     }
   };
 

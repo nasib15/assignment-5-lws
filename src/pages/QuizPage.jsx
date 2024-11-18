@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { actions } from "../actions";
 import Avatar from "../assets/profile.png";
 import SingleQuizQuestion from "../components/quiz/SingleQuizQuestion";
@@ -36,6 +37,7 @@ const QuizPage = () => {
         }
       } catch (error) {
         dispatch({ type: actions.quiz.DATA_FETCHING_ERROR, error });
+        toast.error(error.response?.data?.message || "Failed to fetch quiz");
       }
     };
 

@@ -1,9 +1,68 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { actions } from "../actions";
 import CircularProgressbar from "../assets/icons/circular-progressbar.svg";
 import LogoWhite from "../assets/logo-white.svg";
 import Question from "../components/result/Question";
+import useAxios from "../hooks/useAxios";
+import useQuiz from "../hooks/useQuiz";
+import useResult from "../hooks/useResult";
+import calculateScore from "../utils/calculateResult";
 
 const ResultPage = () => {
+  const { id } = useParams();
+  const { api } = useAxios();
+  const { state, dispatch } = useResult();
+
+  const { state: quizState } = useQuiz();
+  const questions = quizState?.quiz?.data?.questions;
+
+  useEffect(() => {
+    try {
+      const fetchResult = async () => {
+        dispatch({ type: actions.result.DATA_FETCHING });
+
+        const response = await api.get(
+          `${import.meta.env.VITE_API_URL}/quizzes/${id}/attempts`
+        );
+
+        if (response.status === 200) {
+          console.log(response.data.data);
+          dispatch({
+            type: actions.result.DATA_FETCHED,
+            data: response?.data?.data,
+          });
+        }
+      };
+
+      fetchResult();
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: actions.result.DATA_FETCHING_ERROR,
+        error: error,
+      });
+
+      toast.error(state?.error.response?.data?.message);
+    }
+  }, [api, dispatch, id, state?.error.response?.data?.message]);
+
+  // Add loading state
+  if (state.loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Check if attempts exist before accessing
+  const attempt = state?.data?.attempts?.[0];
+
+  const { score, correct, wrong, total } = calculateScore(
+    attempt.submitted_answers,
+    attempt.correct_answers
+  );
+
+  console.log(score, correct, wrong, total);
+
   return (
     <div className="bg-background text-foreground min-h-screen">
       <div className="flex min-h-screen overflow-hidden">
@@ -12,28 +71,27 @@ const ResultPage = () => {
           <div>
             <div className="text-white">
               <div>
-                <h2 className="text-4xl font-bold mb-2">React Hooks Quiz</h2>
-                <p>
-                  A quiz on React hooks like useState, useEffect, and
-                  useContext.{" "}
-                </p>
+                <h2 className="text-4xl font-bold mb-2">
+                  {state?.data?.quiz?.title}
+                </h2>
+                <p>{state?.data?.quiz?.description}</p>
               </div>
 
               <div className="my-6 flex items-center  ">
                 <div className="w-1/2">
                   <div className="flex gap-6 my-6">
                     <div>
-                      <p className="font-semibold text-2xl my-0">10</p>
+                      <p className="font-semibold text-2xl my-0">{total}</p>
                       <p className="text-gray-300">Questions</p>
                     </div>
 
                     <div>
-                      <p className="font-semibold text-2xl my-0">8</p>
+                      <p className="font-semibold text-2xl my-0">{correct}</p>
                       <p className="text-gray-300">Correct</p>
                     </div>
 
                     <div>
-                      <p className="font-semibold text-2xl my-0">2</p>
+                      <p className="font-semibold text-2xl my-0">{wrong}</p>
                       <p className="text-gray-300">Wrong</p>
                     </div>
                   </div>
@@ -48,7 +106,9 @@ const ResultPage = () => {
 
                 <div className="w-1/2 bg-primary/80 rounded-md border border-white/20 flex items-center p-4">
                   <div className="flex-1">
-                    <p className="text-2xl font-bold">5/10</p>
+                    <p className="text-2xl font-bold">
+                      {score}/{state?.data?.quiz?.total_marks}
+                    </p>
                     <p>Your Mark</p>
                   </div>
                   <div>
@@ -63,9 +123,9 @@ const ResultPage = () => {
         <div className="max-h-screen md:w-1/2 flex items-center justify-center h-full p-8">
           <div className="h-[calc(100vh-50px)] overflow-y-scroll ">
             <div className="px-4">
-              <Question />
-              <Question />
-              <Question />
+              {questions?.map((question, index) => (
+                <Question key={question.id} question={question} index={index} />
+              ))}
             </div>
           </div>
         </div>

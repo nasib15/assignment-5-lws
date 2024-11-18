@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../../assets/logo-white.svg";
 import Avatar from "../../assets/profile.png";
 import useAuth from "../../hooks/useAuth";
@@ -7,9 +8,9 @@ const AdminLeftNavbar = () => {
   const { user } = auth;
   return (
     <aside className="w-64 bg-primary p-6 flex flex-col">
-      <div className="mb-10">
+      <Link to="/" className="mb-10">
         <img src={Logo} className="h-7" />
-      </div>
+      </Link>
       <nav className="flex-grow">
         <ul className="space-y-2">
           <li>

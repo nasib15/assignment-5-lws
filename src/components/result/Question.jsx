@@ -1,10 +1,12 @@
-const Question = () => {
+const Question = ({ question, index }) => {
+  console.log(question);
+
   return (
     <div className="rounded-lg overflow-hidden shadow-sm mb-4">
       <div className="bg-white p-6 !pb-2">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">
-            1. Which of the following is NOT a binary tree traversal method?
+            {index + 1}. {question?.question}
           </h3>
         </div>
         <div className="space-y-2">
@@ -13,33 +15,36 @@ const Question = () => {
               type="radio"
               name="answer1"
               className="form-radio text-buzzr-purple"
-              checked
+              checked={question?.correctAnswer === question?.options[0]}
             />
-            <span>Inorder</span>
+            <span>{question?.options[0]}</span>
           </label>
           <label className="flex items-center space-x-3">
             <input
               type="radio"
               name="answer1"
               className="form-radio text-buzzr-purple"
+              checked={question?.correctAnswer === question?.options[1]}
             />
-            <span>Preorder</span>
+            <span>{question?.options[1]}</span>
           </label>
           <label className="flex items-center space-x-3">
             <input
               type="radio"
               name="answer1"
               className="form-radio text-buzzr-purple"
+              checked={question?.correctAnswer === question?.options[2]}
             />
-            <span>Postorder</span>
+            <span>{question?.options[2]}</span>
           </label>
           <label className="flex items-center space-x-3">
             <input
               type="radio"
               name="answer1"
               className="form-radio text-buzzr-purple"
+              checked={question?.correctAnswer === question?.options[3]}
             />
-            <span>Crossorder</span>
+            <span>{question?.options[3]}</span>
           </label>
         </div>
       </div>
