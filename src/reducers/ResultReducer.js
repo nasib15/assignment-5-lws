@@ -3,7 +3,6 @@ import { actions } from "../actions";
 const initialState = {
   data: {},
   loading: false,
-  error: null,
 };
 
 const resultReducer = (state, action) => {
@@ -19,13 +18,6 @@ const resultReducer = (state, action) => {
         ...state,
         loading: false,
         data: action.data,
-      };
-
-    case actions.result.DATA_FETCHING_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
       };
 
     default:

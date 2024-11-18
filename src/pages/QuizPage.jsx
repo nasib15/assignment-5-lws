@@ -36,7 +36,8 @@ const QuizPage = () => {
           dispatch({ type: actions.quiz.DATA_FETCHED, data: response.data });
         }
       } catch (error) {
-        dispatch({ type: actions.quiz.DATA_FETCHING_ERROR, error });
+        console.error(error);
+
         toast.error(error.response?.data?.message || "Failed to fetch quiz");
       }
     };

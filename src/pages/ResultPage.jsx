@@ -15,7 +15,7 @@ const ResultPage = () => {
   const { api } = useAxios();
   const { state, dispatch } = useResult();
 
-  const { state: quizState } = useQuiz();
+  const { state: quizState, dispatch: quizDispatch } = useQuiz();
   const questions = quizState?.quiz?.data?.questions;
 
   useEffect(() => {
@@ -28,7 +28,6 @@ const ResultPage = () => {
         );
 
         if (response.status === 200) {
-          console.log(response.data.data);
           dispatch({
             type: actions.result.DATA_FETCHED,
             data: response?.data?.data,
@@ -39,34 +38,64 @@ const ResultPage = () => {
       fetchResult();
     } catch (error) {
       console.log(error);
-      dispatch({
-        type: actions.result.DATA_FETCHING_ERROR,
-        error: error,
-      });
 
-      toast.error(state?.error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
-  }, [api, dispatch, id, state?.error.response?.data?.message]);
+  }, [api, dispatch, id]);
+
+  // fetch quiz data
+  useEffect(() => {
+    quizDispatch({ type: actions.quiz.DATA_FETCHING });
+
+    const fetchQuiz = async () => {
+      try {
+        const response = await api.get(
+          `${import.meta.env.VITE_API_URL}/quizzes/${id}`
+        );
+
+        if (response.status === 200) {
+          quizDispatch({
+            type: actions.quiz.DATA_FETCHED,
+            data: response.data,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+
+        toast.error(error.response?.data?.message || "Failed to fetch quiz");
+      }
+    };
+
+    fetchQuiz();
+  }, [api, id, quizDispatch]);
 
   // Add loading state
-  if (state.loading) {
+  if (state?.loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (quizState?.loading) {
     return <div>Loading...</div>;
   }
 
   // Check if attempts exist before accessing
   const attempt = state?.data?.attempts?.[0];
 
+  if (!attempt) {
+    return <div>Loading.....</div>;
+  }
+
   const { score, correct, wrong, total } = calculateScore(
     attempt.submitted_answers,
     attempt.correct_answers
   );
 
-  console.log(score, correct, wrong, total);
-
   return (
     <div className="bg-background text-foreground min-h-screen">
       <div className="flex min-h-screen overflow-hidden">
-        <img src={LogoWhite} className="max-h-11 fixed left-6 top-6 z-50" />
+        <Link to="/">
+          <img src={LogoWhite} className="max-h-11 fixed left-6 top-6 z-50" />
+        </Link>
         <div className="max-h-screen overflow-hidden hidden lg:flex lg:w-1/2 bg-primary flex-col justify-center p-12 relative">
           <div>
             <div className="text-white">

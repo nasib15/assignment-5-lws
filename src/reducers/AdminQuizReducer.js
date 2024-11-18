@@ -3,7 +3,6 @@ import { actions } from "../actions";
 const initialState = {
   quiz: [],
   loading: false,
-  error: null,
 };
 
 const adminQuizReducer = (state, action) => {
@@ -19,13 +18,6 @@ const adminQuizReducer = (state, action) => {
         ...state,
         loading: false,
         quiz: action.data,
-      };
-
-    case actions.adminQuiz.DATA_FETCHING_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
       };
 
     default:

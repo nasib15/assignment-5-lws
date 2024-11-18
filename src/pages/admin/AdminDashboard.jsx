@@ -30,14 +30,14 @@ const AdminDashboard = () => {
           });
         }
       } catch (error) {
-        dispatch({ type: actions.adminQuiz.DATA_FETCHING_ERROR, error });
+        console.error(error);
 
-        toast.error(state?.error.response?.data?.message);
+        toast.error(error.response?.data?.message);
       }
     };
 
     fetchQuiz();
-  }, [api, dispatch, state?.error.response?.data?.message]);
+  }, [api, dispatch]);
 
   return (
     <main className="flex-grow p-10">

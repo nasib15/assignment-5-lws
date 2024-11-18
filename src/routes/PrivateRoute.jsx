@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/home/Footer";
 import Navbar from "../components/home/Navbar";
 import useAuth from "../hooks/useAuth";
@@ -7,24 +7,36 @@ import ResultProvider from "../providers/ResultProvider";
 
 const PrivateRoute = () => {
   const { auth } = useAuth();
+  const location = useLocation();
+  const isResultPage = location.pathname.includes("/result/");
+
+  if (!auth?.accessToken) {
+    return <Navigate to="/login" />;
+  }
+
+  if (isResultPage) {
+    return (
+      <QuizProvider>
+        <ResultProvider>
+          <Outlet />
+        </ResultProvider>
+      </QuizProvider>
+    );
+  }
+
   return (
-    <>
-      {auth?.accessToken ? (
-        <body className="bg-[#F5F3FF]">
-          <div className="container mx-auto py-3">
-            <Navbar />
-            <QuizProvider>
-              <ResultProvider>
-                <Outlet />
-              </ResultProvider>
-            </QuizProvider>
-            <Footer />
-          </div>
-        </body>
-      ) : (
-        <Navigate to="/login" />
-      )}
-    </>
+    <body className="bg-[#F5F3FF]">
+      <div className="container mx-auto py-3">
+        <Navbar />
+        <QuizProvider>
+          <ResultProvider>
+            <Outlet />
+          </ResultProvider>
+        </QuizProvider>
+        <Footer />
+      </div>
+    </body>
   );
 };
+
 export default PrivateRoute;

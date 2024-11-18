@@ -1,6 +1,4 @@
 const Question = ({ question, index }) => {
-  console.log(question);
-
   return (
     <div className="rounded-lg overflow-hidden shadow-sm mb-4">
       <div className="bg-white p-6 !pb-2">

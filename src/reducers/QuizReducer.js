@@ -4,7 +4,6 @@ const initialState = {
   quiz: {},
   answers: {},
   loading: false,
-  error: null,
 };
 
 const quizReducer = (state, action) => {
@@ -14,9 +13,6 @@ const quizReducer = (state, action) => {
 
     case actions.quiz.DATA_FETCHED:
       return { ...state, loading: false, quiz: action.data };
-
-    case actions.quiz.DATA_FETCHING_ERROR:
-      return { ...state, loading: false, error: action.error };
 
     case actions.quiz.ANSWER_SELECTED:
       return {
@@ -31,9 +27,6 @@ const quizReducer = (state, action) => {
         loading: false,
         answers: action.data,
       };
-
-    case actions.quiz.ANSWER_SUBMITTING_ERROR:
-      return { ...state, loading: false, error: action.error };
 
     default:
       return state;
