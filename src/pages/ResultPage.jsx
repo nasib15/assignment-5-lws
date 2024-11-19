@@ -1,14 +1,16 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../actions";
-import CircularProgressbar from "../assets/icons/circular-progressbar.svg";
 import LogoWhite from "../assets/logo-white.svg";
 import Question from "../components/result/Question";
 import useAxios from "../hooks/useAxios";
 import useQuiz from "../hooks/useQuiz";
 import useResult from "../hooks/useResult";
 import calculateScore from "../utils/calculateResult";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const ResultPage = () => {
   const { id } = useParams();
@@ -91,75 +93,98 @@ const ResultPage = () => {
   );
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
-      <div className="flex min-h-screen overflow-hidden">
-        <Link to="/">
-          <img src={LogoWhite} className="max-h-11 fixed left-6 top-6 z-50" />
-        </Link>
-        <div className="max-h-screen overflow-hidden hidden lg:flex lg:w-1/2 bg-primary flex-col justify-center p-12 relative">
-          <div>
-            <div className="text-white">
-              <div>
-                <h2 className="text-4xl font-bold mb-2">
-                  {state?.data?.quiz?.title}
-                </h2>
-                <p>{state?.data?.quiz?.description}</p>
-              </div>
-
-              <div className="my-6 flex items-center  ">
-                <div className="w-1/2">
-                  <div className="flex gap-6 my-6">
-                    <div>
-                      <p className="font-semibold text-2xl my-0">{total}</p>
-                      <p className="text-gray-300">Questions</p>
-                    </div>
-
-                    <div>
-                      <p className="font-semibold text-2xl my-0">{correct}</p>
-                      <p className="text-gray-300">Correct</p>
-                    </div>
-
-                    <div>
-                      <p className="font-semibold text-2xl my-0">{wrong}</p>
-                      <p className="text-gray-300">Wrong</p>
-                    </div>
-                  </div>
-
-                  <Link
-                    to="/leaderboard"
-                    className=" bg-secondary py-3 rounded-md hover:bg-secondary/90 transition-colors text-lg font-medium underline text-white"
-                  >
-                    View Leaderboard
-                  </Link>
+    <>
+      <Helmet>
+        <title>Quizzes | Result</title>
+      </Helmet>
+      <div className="bg-background text-foreground min-h-screen">
+        <div className="flex min-h-screen overflow-hidden">
+          <Link to="/">
+            <img src={LogoWhite} className="max-h-11 fixed left-6 top-6 z-50" />
+          </Link>
+          <div className="max-h-screen overflow-hidden hidden lg:flex lg:w-1/2 bg-primary flex-col justify-center p-12 relative">
+            <div>
+              <div className="text-white">
+                <div>
+                  <h2 className="text-4xl font-bold mb-2">
+                    {state?.data?.quiz?.title}
+                  </h2>
+                  <p>{state?.data?.quiz?.description}</p>
                 </div>
 
-                <div className="w-1/2 bg-primary/80 rounded-md border border-white/20 flex items-center p-4">
-                  <div className="flex-1">
-                    <p className="text-2xl font-bold">
-                      {score}/{state?.data?.quiz?.total_marks}
-                    </p>
-                    <p>Your Mark</p>
+                <div className="my-6 flex items-center  ">
+                  <div className="w-1/2">
+                    <div className="flex gap-6 my-6">
+                      <div>
+                        <p className="font-semibold text-2xl my-0">{total}</p>
+                        <p className="text-gray-300">Questions</p>
+                      </div>
+
+                      <div>
+                        <p className="font-semibold text-2xl my-0">{correct}</p>
+                        <p className="text-gray-300">Correct</p>
+                      </div>
+
+                      <div>
+                        <p className="font-semibold text-2xl my-0">{wrong}</p>
+                        <p className="text-gray-300">Wrong</p>
+                      </div>
+                    </div>
+
+                    <Link
+                      to={`/leaderboard/${id}`}
+                      className=" bg-secondary py-3 rounded-md hover:bg-secondary/90 transition-colors text-lg font-medium underline text-white"
+                    >
+                      View Leaderboard
+                    </Link>
                   </div>
-                  <div>
-                    <img src={CircularProgressbar} className="h-20" />
+
+                  <div className="w-1/2 bg-primary/80 rounded-md border border-white/20 flex items-center p-4">
+                    <div className="flex-1">
+                      <p className="text-2xl font-bold">
+                        {score}/{state?.data?.quiz?.total_marks}
+                      </p>
+                      <p>Your Mark</p>
+                    </div>
+                    <div className="w-20 h-20">
+                      <CircularProgressbar
+                        value={(score / state?.data?.quiz?.total_marks) * 100}
+                        text={`${Math.round(
+                          (score / state?.data?.quiz?.total_marks) * 100
+                        )}%`}
+                        styles={buildStyles({
+                          pathColor: "#ffffff",
+                          textColor: "#ffffff",
+                          trailColor: "rgba(255,255,255,0.2)",
+
+                          textSize: "24px",
+
+                          pathTransitionDuration: 0.5,
+                        })}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="max-h-screen md:w-1/2 flex items-center justify-center h-full p-8">
-          <div className="h-[calc(100vh-50px)] overflow-y-scroll ">
-            <div className="px-4">
-              {questions?.map((question, index) => (
-                <Question key={question.id} question={question} index={index} />
-              ))}
+          <div className="max-h-screen md:w-1/2 flex items-center justify-center h-full p-8">
+            <div className="h-[calc(100vh-50px)] overflow-y-scroll ">
+              <div className="px-4">
+                {questions?.map((question, index) => (
+                  <Question
+                    key={question.id}
+                    question={question}
+                    index={index}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default ResultPage;
