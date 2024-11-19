@@ -75,8 +75,8 @@ const Leaderboard = () => {
             )}
 
             <div>
-              <h1 className="text-2xl font-bold">Leaderboard</h1>
-              <p className="mb-6">{leaderboardData?.quiz?.title}</p>
+              <h1 className="text-2xl font-bold ml-2">Leaderboard</h1>
+              <p className="mb-6 ml-2">{leaderboardData?.quiz?.title}</p>
               <ul className="space-y-4">
                 {sortedLeaderboard.slice(0, 5).map((attempt, index) => (
                   <LeaderboardRow

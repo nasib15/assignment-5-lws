@@ -4,7 +4,7 @@ import calculateScore from "../../utils/calculateResult";
 const LeaderboardRow = ({ attempt, position, isCurrentUser }) => {
   return (
     <li
-      className={`flex items-center justify-between p-4 rounded-lg ${
+      className={`flex items-center justify-between rounded-lg p-1 px-2 hover:bg-primary/10 transition-all hover:cursor-pointer ${
         isCurrentUser ? "bg-primary/10" : ""
       }`}
     >

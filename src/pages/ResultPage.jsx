@@ -15,22 +15,23 @@ import "react-circular-progressbar/dist/styles.css";
 const ResultPage = () => {
   const { id } = useParams();
   const { api } = useAxios();
-  const { state, dispatch } = useResult();
+  const { state: resultState, dispatch: resultDispatch } = useResult();
 
   const { state: quizState, dispatch: quizDispatch } = useQuiz();
   const questions = quizState?.quiz?.data?.questions;
 
+  // Quiz data fetching for calculation of the final marks
   useEffect(() => {
     try {
       const fetchResult = async () => {
-        dispatch({ type: actions.result.DATA_FETCHING });
+        resultDispatch({ type: actions.result.DATA_FETCHING });
 
         const response = await api.get(
           `${import.meta.env.VITE_API_URL}/quizzes/${id}/attempts`
         );
 
         if (response.status === 200) {
-          dispatch({
+          resultDispatch({
             type: actions.result.DATA_FETCHED,
             data: response?.data?.data,
           });
@@ -43,9 +44,9 @@ const ResultPage = () => {
 
       toast.error(error.response?.data?.message);
     }
-  }, [api, dispatch, id]);
+  }, [api, resultDispatch, id]);
 
-  // fetch quiz data
+  // fetch quiz questions and answers
   useEffect(() => {
     quizDispatch({ type: actions.quiz.DATA_FETCHING });
 
@@ -72,7 +73,7 @@ const ResultPage = () => {
   }, [api, id, quizDispatch]);
 
   // Add loading state
-  if (state?.loading) {
+  if (resultState?.loading) {
     return <div>Loading...</div>;
   }
 
@@ -81,7 +82,11 @@ const ResultPage = () => {
   }
 
   // Check if attempts exist before accessing
-  const attempt = state?.data?.attempts?.[0];
+  const attempt = resultState?.data?.attempts?.[0];
+
+  console.log(attempt);
+
+  console.log(resultState);
 
   if (!attempt) {
     return <div>Loading.....</div>;
@@ -107,9 +112,9 @@ const ResultPage = () => {
               <div className="text-white">
                 <div>
                   <h2 className="text-4xl font-bold mb-2">
-                    {state?.data?.quiz?.title}
+                    {resultState?.data?.quiz?.title}
                   </h2>
-                  <p>{state?.data?.quiz?.description}</p>
+                  <p>{resultState?.data?.quiz?.description}</p>
                 </div>
 
                 <div className="my-6 flex items-center  ">
@@ -142,15 +147,17 @@ const ResultPage = () => {
                   <div className="w-1/2 bg-primary/80 rounded-md border border-white/20 flex items-center p-4">
                     <div className="flex-1">
                       <p className="text-2xl font-bold">
-                        {score}/{state?.data?.quiz?.total_marks}
+                        {score}/{resultState?.data?.quiz?.total_marks}
                       </p>
                       <p>Your Mark</p>
                     </div>
                     <div className="w-20 h-20">
                       <CircularProgressbar
-                        value={(score / state?.data?.quiz?.total_marks) * 100}
+                        value={
+                          (score / resultState?.data?.quiz?.total_marks) * 100
+                        }
                         text={`${Math.round(
-                          (score / state?.data?.quiz?.total_marks) * 100
+                          (score / resultState?.data?.quiz?.total_marks) * 100
                         )}%`}
                         styles={buildStyles({
                           pathColor: "#ffffff",
@@ -177,6 +184,7 @@ const ResultPage = () => {
                     key={question.id}
                     question={question}
                     index={index}
+                    attempt={attempt}
                   />
                 ))}
               </div>

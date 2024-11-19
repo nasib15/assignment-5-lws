@@ -1,4 +1,27 @@
-const Question = ({ question, index }) => {
+import { CheckIcon, CrossIcon } from "../SVG/Icon";
+
+const Question = ({ question, index, attempt }) => {
+  // find correct answer
+  const correctAnswer = attempt?.correct_answers?.find(
+    (answer) => answer?.question_id === question?.id
+  )?.answer;
+
+  // find selected answer
+  const selectedAnswer = attempt?.submitted_answers?.find(
+    (answer) => answer?.question_id === question?.id
+  )?.answer;
+
+  // get color style based on the selected answer and correct answer
+  const getAnswerStyle = (option) => {
+    if (option === correctAnswer) {
+      return "bg-green-100 flex justify-between items-center";
+    }
+    if (option === selectedAnswer && option !== correctAnswer) {
+      return "bg-red-100 flex justify-between items-center";
+    }
+    return "flex items-center";
+  };
+
   return (
     <div className="rounded-lg overflow-hidden shadow-sm mb-4">
       <div className="bg-white p-6 !pb-2">
@@ -8,51 +31,28 @@ const Question = ({ question, index }) => {
           </h3>
         </div>
         <div className="space-y-2">
-          <label className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="answer1"
-              className="form-radio text-buzzr-purple"
-              checked={question?.correctAnswer === question?.options[0]}
-            />
-            <span>{question?.options[0]}</span>
-          </label>
-          <label className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="answer1"
-              className="form-radio text-buzzr-purple"
-              checked={question?.correctAnswer === question?.options[1]}
-            />
-            <span>{question?.options[1]}</span>
-          </label>
-          <label className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="answer1"
-              className="form-radio text-buzzr-purple"
-              checked={question?.correctAnswer === question?.options[2]}
-            />
-            <span>{question?.options[2]}</span>
-          </label>
-          <label className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="answer1"
-              className="form-radio text-buzzr-purple"
-              checked={question?.correctAnswer === question?.options[3]}
-            />
-            <span>{question?.options[3]}</span>
-          </label>
+          {question?.options.map((option, idx) => (
+            <label
+              key={idx}
+              className={`space-x-3 p-2 rounded ${getAnswerStyle(option)}`}
+            >
+              <div className="flex items-center space-x-3">
+                <input
+                  type="radio"
+                  name={`question-${question?.id}`}
+                  className="form-radio text-buzzr-purple"
+                  disabled
+                  checked={option === selectedAnswer}
+                />
+                <span>{option}</span>
+              </div>
+              {option === correctAnswer && <CheckIcon />}
+              {option === selectedAnswer && option !== correctAnswer && (
+                <CrossIcon />
+              )}
+            </label>
+          ))}
         </div>
-      </div>
-      <div className="flex space-x-4 bg-primary/10 px-6 py-2">
-        <button className="text-red-600 hover:text-red-800 font-medium">
-          Delete
-        </button>
-        <button className="text-primary hover:text-primary/80 font-medium">
-          Edit Question
-        </button>
       </div>
     </div>
   );
