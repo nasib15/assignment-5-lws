@@ -22,8 +22,8 @@ function App() {
         </Route>
         <Route element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/quizset" element={<QuizSetPage />} />
-          <Route path="/admin/quizsetentry" element={<QuizSetEntry />} />
+          <Route path="/admin/quiz-set" element={<QuizSetPage />} />
+          <Route path="/admin/quiz-set-entry" element={<QuizSetEntry />} />
         </Route>
         <Route path="/" element={<Home />} exact />
         <Route path="/login" element={<LoginPage />} />

@@ -1,13 +1,13 @@
 import { CheckIcon, CrossIcon } from "../SVG/Icon";
 
-const Question = ({ question, index, attempt }) => {
+const Question = ({ question, index, userResultData }) => {
   // find correct answer
-  const correctAnswer = attempt?.correct_answers?.find(
+  const correctAnswer = userResultData?.correct_answers?.find(
     (answer) => answer?.question_id === question?.id
   )?.answer;
 
   // find selected answer
-  const selectedAnswer = attempt?.submitted_answers?.find(
+  const selectedAnswer = userResultData?.submitted_answers?.find(
     (answer) => answer?.question_id === question?.id
   )?.answer;
 

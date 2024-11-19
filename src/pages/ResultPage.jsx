@@ -1,18 +1,20 @@
 import { useEffect } from "react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { Helmet } from "react-helmet";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../actions";
 import LogoWhite from "../assets/logo-white.svg";
 import Question from "../components/result/Question";
+import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import useQuiz from "../hooks/useQuiz";
 import useResult from "../hooks/useResult";
 import calculateScore from "../utils/calculateResult";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 
 const ResultPage = () => {
+  const { auth } = useAuth();
   const { id } = useParams();
   const { api } = useAxios();
   const { state: resultState, dispatch: resultDispatch } = useResult();
@@ -81,20 +83,18 @@ const ResultPage = () => {
     return <div>Loading...</div>;
   }
 
-  // Check if attempts exist before accessing
-  const attempt = resultState?.data?.attempts?.[0];
+  // User attempt
+  const userResultData = resultState?.data?.attempts?.find(
+    (attempt) => attempt?.user?.id === auth?.user?.id
+  );
 
-  console.log(attempt);
-
-  console.log(resultState);
-
-  if (!attempt) {
+  if (!userResultData) {
     return <div>Loading.....</div>;
   }
 
   const { score, correct, wrong, total } = calculateScore(
-    attempt.submitted_answers,
-    attempt.correct_answers
+    userResultData.submitted_answers,
+    userResultData.correct_answers
   );
 
   return (
@@ -184,7 +184,7 @@ const ResultPage = () => {
                     key={question.id}
                     question={question}
                     index={index}
-                    attempt={attempt}
+                    userResultData={userResultData}
                   />
                 ))}
               </div>

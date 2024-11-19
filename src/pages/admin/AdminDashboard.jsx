@@ -52,7 +52,7 @@ const AdminDashboard = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link to="/admin/quizset" className="group">
+          <Link to="/admin/quiz-set" className="group">
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 ">
               <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
                 <PlusIcon />

@@ -52,13 +52,13 @@ const QuizSetPage = () => {
                 ></textarea>
               </div>
 
-              <a
-                href="./quiz_set_entry_page.html"
+              <Link
+                to="/admin/quiz-set-entry"
                 type="submit"
                 className="w-full block text-center bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Next
-              </a>
+              </Link>
             </form>
           </div>
         </div>
