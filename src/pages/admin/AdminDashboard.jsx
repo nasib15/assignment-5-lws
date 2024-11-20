@@ -8,10 +8,8 @@ import useAdminQuiz from "../../hooks/useAdminQuiz";
 import useAxios from "../../hooks/useAxios";
 
 const AdminDashboard = () => {
-  const { state, dispatch } = useAdminQuiz();
+  const { state: adminQuizState, dispatch } = useAdminQuiz();
   const { api } = useAxios();
-
-  console.log(state);
 
   useEffect(() => {
     dispatch({ type: actions.adminQuiz.DATA_FETCHING });
@@ -21,8 +19,6 @@ const AdminDashboard = () => {
         const response = await api.get(
           `${import.meta.env.VITE_API_URL}/admin/quizzes`
         );
-
-        console.log(response);
 
         if (response.status === 200) {
           dispatch({
@@ -66,41 +62,22 @@ const AdminDashboard = () => {
             </div>
           </Link>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 group cursor-pointer">
-            <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
-              <Icon />
+          {adminQuizState?.quiz?.map((singleQuiz) => (
+            <div
+              key={singleQuiz.id}
+              className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 group cursor-pointer"
+            >
+              <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
+                <Icon />
+              </div>
+              <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-all">
+                {singleQuiz?.title}
+              </h3>
+              <p className="text-gray-600 text-sm group-hover:scale-105 transition-all">
+                {singleQuiz?.description?.slice(0, 34) + "....."}
+              </p>
             </div>
-            <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-all">
-              JavaScript Basics Quiz
-            </h3>
-            <p className="text-gray-600 text-sm group-hover:scale-105 transition-all">
-              Test knowledge of core JavaScript
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 group cursor-pointer">
-            <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
-              <Icon />
-            </div>
-            <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-all">
-              React Hooks Quiz
-            </h3>
-            <p className="text-gray-600 text-sm group-hover:scale-105 transition-all">
-              Test knowledge of core JavaScript
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 group">
-            <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
-              <Icon />
-            </div>
-            <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-all">
-              Backend vs. Frontend Quiz
-            </h3>
-            <p className="text-gray-600 text-sm group-hover:scale-105 transition-all">
-              Test knowledge of core JavaScript
-            </p>
-          </div>
+          ))}
         </div>
       </main>
     </>
