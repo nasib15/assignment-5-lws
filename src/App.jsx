@@ -23,7 +23,7 @@ function App() {
         <Route element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/quiz-set" element={<QuizSetPage />} />
-          <Route path="/admin/quiz-set-entry" element={<QuizSetEntry />} />
+          <Route path="/admin/quiz-set-entry/:id" element={<QuizSetEntry />} />
         </Route>
         <Route path="/" element={<Home />} exact />
         <Route path="/login" element={<LoginPage />} />

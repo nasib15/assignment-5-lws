@@ -32,7 +32,11 @@ const QuizSetPage = () => {
 
         toast.success("Quiz topic submitted successfully");
 
-        navigate("/admin/quiz-set-entry");
+        // getting id after creating question so that it can be used to navigate to the quiz set entry page
+
+        const id = response.data.data.id;
+
+        navigate(`/admin/quiz-set-entry/${id}`);
       }
     } catch (error) {
       console.error(error);

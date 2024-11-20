@@ -1,10 +1,12 @@
 import { CheckIcon, CrossIcon } from "../SVG/Icon";
 
-const Question = ({ question, index, userResultData }) => {
+const Question = ({ question, index, userResultData = {} }) => {
+  console.log(question);
   // find correct answer
-  const correctAnswer = userResultData?.correct_answers?.find(
-    (answer) => answer?.question_id === question?.id
-  )?.answer;
+  const correctAnswer =
+    userResultData?.correct_answers?.find(
+      (answer) => answer?.question_id === question?.id
+    )?.answer || question?.correctAnswer;
 
   // find selected answer
   const selectedAnswer = userResultData?.submitted_answers?.find(
@@ -42,7 +44,9 @@ const Question = ({ question, index, userResultData }) => {
                   name={`question-${question?.id}`}
                   className="form-radio text-buzzr-purple"
                   disabled
-                  checked={option === selectedAnswer}
+                  checked={
+                    option === selectedAnswer || option === correctAnswer
+                  }
                 />
                 <span>{option}</span>
               </div>

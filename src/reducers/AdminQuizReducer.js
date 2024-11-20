@@ -27,6 +27,17 @@ const adminQuizReducer = (state, action) => {
         quiz: [...state.quiz, action.data],
       };
 
+    case actions.adminQuiz.QUESTION_SUBMITTED:
+      return {
+        ...state,
+        loading: false,
+        quiz: state.quiz.map((quiz) =>
+          quiz.id === action.data.id
+            ? { ...quiz, Questions: [...quiz.Questions, action.data] }
+            : quiz
+        ),
+      };
+
     default:
       return state;
   }

@@ -74,7 +74,9 @@ const AdminDashboard = () => {
                 {singleQuiz?.title}
               </h3>
               <p className="text-gray-600 text-sm group-hover:scale-105 transition-all">
-                {singleQuiz?.description?.slice(0, 34) + "....."}
+                {singleQuiz?.description.length > 34
+                  ? singleQuiz?.description.slice(0, 34) + "...."
+                  : singleQuiz?.description}
               </p>
             </div>
           ))}
