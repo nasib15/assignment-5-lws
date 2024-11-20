@@ -21,8 +21,6 @@ const QuizSetPage = () => {
   const { api } = useAxios();
   const { state: adminQuizState, dispatch } = useAdminQuiz();
 
-  console.log(adminQuizState);
-
   // If id exists, fetch existing quiz data
   useEffect(() => {
     if (id) {

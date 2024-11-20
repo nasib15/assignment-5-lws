@@ -51,10 +51,10 @@ const QuizPage = () => {
       <Helmet>
         <title>Quizzes | Quiz</title>
       </Helmet>
-      <main>
-        <div className="max-w-8xl mx-auto h-[calc(100vh-10rem)]">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 h-full">
-            <div className="lg:col-span-1 bg-white rounded-md p-6 h-full flex flex-col">
+      <main className="flex-1">
+        <div className="container mx-auto min-h-[calc(100vh-12rem)] flex flex-col">
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-1 bg-white rounded-md p-6 flex flex-col">
               <div>
                 <h2 className="text-4xl font-bold mb-4">
                   {state?.quiz?.data?.title}

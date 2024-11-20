@@ -25,8 +25,8 @@ const PrivateRoute = () => {
   }
 
   return (
-    <body className="bg-[#F5F3FF]">
-      <div className="container mx-auto py-3">
+    <div className="bg-[#F5F3FF] min-h-screen flex flex-col">
+      <div className="container mx-auto py-3 flex-1 flex flex-col">
         <Navbar />
         <QuizProvider>
           <ResultProvider>
@@ -35,7 +35,7 @@ const PrivateRoute = () => {
         </QuizProvider>
         <Footer />
       </div>
-    </body>
+    </div>
   );
 };
 
