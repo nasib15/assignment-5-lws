@@ -63,7 +63,8 @@ const AdminDashboard = () => {
           </Link>
 
           {adminQuizState?.quiz?.map((singleQuiz) => (
-            <div
+            <Link
+              to={`/admin/quiz-set/${singleQuiz.id}`}
               key={singleQuiz.id}
               className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 group cursor-pointer"
             >
@@ -78,7 +79,7 @@ const AdminDashboard = () => {
                   ? singleQuiz?.description.slice(0, 34) + "...."
                   : singleQuiz?.description}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </main>

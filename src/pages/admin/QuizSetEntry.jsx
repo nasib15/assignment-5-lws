@@ -188,6 +188,9 @@ const QuizSetEntry = () => {
                       })}
                     />
                   </div>
+                  <p className="text-sm text-red-500">
+                    {errors.optionText1?.message}
+                  </p>
 
                   <div className="flex items-center space-x-2 px-4 py-1 rounded-md group focus-within:ring focus-within:ring-primary/80 bg-white">
                     <input
@@ -210,6 +213,9 @@ const QuizSetEntry = () => {
                       })}
                     />
                   </div>
+                  <p className="text-sm text-red-500">
+                    {errors.optionText2?.message}
+                  </p>
 
                   <div className="flex items-center space-x-2 px-4 py-1 rounded-md group focus-within:ring focus-within:ring-primary/80 bg-white">
                     <input
@@ -232,7 +238,9 @@ const QuizSetEntry = () => {
                       })}
                     />
                   </div>
-
+                  <p className="text-sm text-red-500">
+                    {errors.optionText3?.message}
+                  </p>
                   <div className="flex items-center space-x-2 px-4 py-1 rounded-md group focus-within:ring focus-within:ring-primary/80 bg-white">
                     <input
                       type="radio"
@@ -254,7 +262,16 @@ const QuizSetEntry = () => {
                       })}
                     />
                   </div>
+
+                  <p className="text-sm text-red-500">
+                    {errors.optionText4?.message}
+                  </p>
                 </div>
+
+                <p className="text-sm text-red-500">
+                  {errors.correctAnswer?.message}
+                </p>
+
                 <button className="w-full bg-primary text-white text-primary-foreground p-2 rounded-md hover:bg-primary/90 transition-colors">
                   Save Quiz
                 </button>
