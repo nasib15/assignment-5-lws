@@ -1,5 +1,5 @@
 import Profile from "../../assets/profile.png";
-import calculateScore from "../../utils/calculateResult";
+import calculateResult from "../../utils/calculateResult";
 
 const LeaderboardRow = ({ attempt, position, isCurrentUser }) => {
   return (
@@ -24,7 +24,7 @@ const LeaderboardRow = ({ attempt, position, isCurrentUser }) => {
       <div className="flex items-center">
         <span className="font-semibold">
           {
-            calculateScore(attempt.submitted_answers, attempt.correct_answers)
+            calculateResult(attempt.submitted_answers, attempt.correct_answers)
               .score
           }{" "}
           points

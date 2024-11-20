@@ -20,6 +20,13 @@ const adminQuizReducer = (state, action) => {
         quiz: action.data,
       };
 
+    case actions.adminQuiz.QUIZ_TOPIC_SUBMITTED:
+      return {
+        ...state,
+        loading: false,
+        quiz: [...state.quiz, action.data],
+      };
+
     default:
       return state;
   }

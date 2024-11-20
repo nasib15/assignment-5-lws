@@ -1,4 +1,4 @@
-const calculateScore = (submittedAnswers, correctAnswers) => {
+const calculateResult = (submittedAnswers, correctAnswers) => {
   let score = 0;
   let correct = 0;
   let wrong = 0;
@@ -26,4 +26,4 @@ const calculateScore = (submittedAnswers, correctAnswers) => {
   };
 };
 
-export default calculateScore;
+export default calculateResult;

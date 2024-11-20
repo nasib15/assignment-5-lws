@@ -1,8 +1,8 @@
 import Profile from "../../assets/profile.png";
-import calculateScore from "../../utils/calculateResult";
+import calculateResult from "../../utils/calculateResult";
 
 const MyLeaderboardCard = ({ currentUserData, position }) => {
-  const { score, correct, wrong } = calculateScore(
+  const { score, correct, wrong } = calculateResult(
     currentUserData?.submitted_answers,
     currentUserData?.correct_answers
   );

@@ -4,7 +4,6 @@ import useAuth from "../../hooks/useAuth";
 
 const QuizSetEntry = () => {
   const { auth } = useAuth();
-  console.log(auth);
   return (
     <div className="bg-[#F5F3FF] min-h-screen flex">
       <main className="md:flex-grow px-4 sm:px-6 lg:px-8 py-8">

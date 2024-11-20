@@ -53,20 +53,20 @@ const LoginForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-4">
         <Field
-          label="Enter your username or email address"
+          label="Enter your email address"
           htmlFor="email"
           error={errors.email}
         >
           <input
             {...register("email", {
-              required: "Username or email address is required",
+              required: "Email address is required",
             })}
-            type="text"
+            type="email"
             id="email"
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.email ? "border-red-500" : "border-gray-300"
             }`}
-            placeholder="Username or email address"
+            placeholder="Email address"
           />
         </Field>
       </div>

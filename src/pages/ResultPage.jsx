@@ -11,7 +11,7 @@ import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import useQuiz from "../hooks/useQuiz";
 import useResult from "../hooks/useResult";
-import calculateScore from "../utils/calculateResult";
+import calculateResult from "../utils/calculateResult";
 
 const ResultPage = () => {
   const { auth } = useAuth();
@@ -92,7 +92,7 @@ const ResultPage = () => {
     return <div>Loading.....</div>;
   }
 
-  const { score, correct, wrong, total } = calculateScore(
+  const { score, correct, wrong, total } = calculateResult(
     userResultData.submitted_answers,
     userResultData.correct_answers
   );

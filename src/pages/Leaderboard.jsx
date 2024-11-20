@@ -7,7 +7,7 @@ import MyLeaderboardCard from "../components/leaderboard/MyLeaderboardCard";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import calculatePositionText from "../utils/calculatePositionText";
-import calculateScore from "../utils/calculateResult";
+import calculateResult from "../utils/calculateResult";
 
 const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState(null);
@@ -32,8 +32,8 @@ const Leaderboard = () => {
           // Sort attempts by points
           const sortedData = response.data.data.attempts.sort(
             (a, b) =>
-              calculateScore(b.submitted_answers, b.correct_answers).score -
-              calculateScore(a.submitted_answers, a.correct_answers).score
+              calculateResult(b.submitted_answers, b.correct_answers).score -
+              calculateResult(a.submitted_answers, a.correct_answers).score
           );
           setSortedLeaderboard(sortedData);
         }

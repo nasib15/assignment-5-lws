@@ -81,7 +81,7 @@ const RegistrationForm = () => {
               {...register("email", {
                 required: "Email is required",
               })}
-              type="text"
+              type="email"
               id="email"
               className={`w-full px-4 py-3 rounded-lg border ${
                 errors.email ? "border-red-500" : "border-gray-300"
