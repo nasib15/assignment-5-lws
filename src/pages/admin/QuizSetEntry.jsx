@@ -33,9 +33,9 @@ const QuizSetEntry = () => {
   // edit the question
 
   const handleEditQuestion = (question) => {
-    console.log(question);
     setIsEditing(true);
     setQuizId(question.id);
+
     setValue("quizTitle", question.question);
 
     question.options.forEach((option, index) => {
