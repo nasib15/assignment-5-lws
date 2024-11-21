@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,6 +10,9 @@ import useAdminQuiz from "../../hooks/useAdminQuiz";
 import useAxios from "../../hooks/useAxios";
 
 const QuizSetEntry = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [quizId, setQuizId] = useState(null);
+
   const { id } = useParams();
   const { api } = useAxios();
 
@@ -24,7 +27,26 @@ const QuizSetEntry = () => {
     formState: { errors },
     handleSubmit,
     reset,
+    setValue,
   } = useForm();
+
+  // edit the question
+
+  const handleEditQuestion = (question) => {
+    console.log(question);
+    setIsEditing(true);
+    setQuizId(question.id);
+    setValue("quizTitle", question.question);
+
+    question.options.forEach((option, index) => {
+      setValue(`optionText${index + 1}`, option);
+
+      // 1,2,3,4 for the correct answer
+      if (option === question.correctAnswer) {
+        setValue("correctAnswer", (index + 1).toString());
+      }
+    });
+  };
 
   // submitting question
 
@@ -45,20 +67,26 @@ const QuizSetEntry = () => {
 
     // api call to create the question
     try {
-      const response = await api.post(
-        `${import.meta.env.VITE_API_URL}/admin/quizzes/${id}/questions`,
-        questionData
-      );
+      let response;
 
-      if (response.status === 201) {
+      if (isEditing) {
+        // Update existing question
+        response = await api.patch(
+          `${import.meta.env.VITE_API_URL}/admin/questions/${quizId}`,
+          questionData
+        );
+        toast.success("Question updated successfully");
+      } else {
+        // Create new question
+        response = await api.post(
+          `${import.meta.env.VITE_API_URL}/admin/quizzes/${id}/questions`,
+          questionData
+        );
         toast.success("Question created successfully");
+      }
 
-        dispatch({
-          type: actions.adminQuiz.QUESTION_SUBMITTED,
-          data: response.data.data,
-        });
-
-        // fetch updated quiz data
+      if (response.status === 200 || response.status === 201) {
+        // Fetch updated quiz data
         const updatedQuizResponse = await api.get(
           `${import.meta.env.VITE_API_URL}/admin/quizzes`
         );
@@ -70,6 +98,9 @@ const QuizSetEntry = () => {
           });
         }
 
+        // Reset form and editing state
+        setIsEditing(false);
+        setQuizId(null);
         reset();
       }
     } catch (error) {
@@ -140,7 +171,7 @@ const QuizSetEntry = () => {
 
               <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                 <h2 className="text-xl font-bold text-foreground">
-                  Create Quiz
+                  {isEditing ? "Update Quiz" : "Create Quiz"}
                 </h2>
 
                 <div>
@@ -273,14 +304,19 @@ const QuizSetEntry = () => {
                 </p>
 
                 <button className="w-full bg-primary text-white text-primary-foreground p-2 rounded-md hover:bg-primary/90 transition-colors">
-                  Save Quiz
+                  {isEditing ? "Update Quiz" : "Save Quiz"}
                 </button>
               </form>
             </div>
 
             <div className="px-4">
               {thisQuestion?.Questions?.map((question, index) => (
-                <Question key={question.id} index={index} question={question} />
+                <Question
+                  key={question.id}
+                  index={index}
+                  question={question}
+                  onEdit={handleEditQuestion}
+                />
               ))}
             </div>
           </div>

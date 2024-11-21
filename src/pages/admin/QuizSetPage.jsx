@@ -21,6 +21,8 @@ const QuizSetPage = () => {
   const { api } = useAxios();
   const { state: adminQuizState, dispatch } = useAdminQuiz();
 
+  const currentStatus = watch("status");
+
   // If id exists, fetch existing quiz data
   useEffect(() => {
     if (id) {
@@ -78,8 +80,6 @@ const QuizSetPage = () => {
       toast.error(error.response.data.message);
     }
   };
-
-  const currentStatus = watch("status");
 
   return (
     <div className="bg-[#F5F3FF] min-h-screen flex">

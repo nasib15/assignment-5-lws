@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const QuizCard = ({ quiz }) => {
   const { id, thumbnail, is_attempted, title, description } = quiz;
-  console.log(quiz);
+
   return (
     <Link
       to={`${is_attempted ? `/result/${id}` : `/quiz/${id}`}`}

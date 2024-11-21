@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
 
   // Update localstorage whenever auth changes
   useEffect(() => {
+    // check if auth is empty object
     if (Object.keys(auth).length) {
       localStorage.setItem("auth", JSON.stringify(auth));
     } else {
