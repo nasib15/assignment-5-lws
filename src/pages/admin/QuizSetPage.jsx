@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -19,7 +19,9 @@ const QuizSetPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { api } = useAxios();
-  const { state: adminQuizState, dispatch } = useAdminQuiz();
+  const { state: adminQuizState, dispatch: adminQuizDispatch } = useAdminQuiz();
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const currentStatus = watch("status");
 
@@ -33,6 +35,13 @@ const QuizSetPage = () => {
         setValue("status", existingQuiz.status);
       }
     }
+
+    // Cleanup function so that the field value would be reset
+    return () => {
+      setValue("title", "");
+      setValue("description", "");
+      setValue("status", "draft");
+    };
   }, [adminQuizState?.quiz, id, setValue]);
 
   const onSubmit = async (formData) => {
@@ -60,7 +69,7 @@ const QuizSetPage = () => {
         );
 
         if (response.status === 201) {
-          dispatch({
+          adminQuizDispatch({
             type: actions.adminQuiz.QUIZ_TOPIC_SUBMITTED,
             data: formData,
           });
@@ -77,7 +86,32 @@ const QuizSetPage = () => {
     } catch (error) {
       console.error(error);
 
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
+  // delete quiz set
+
+  const handleDelete = async (id) => {
+    try {
+      adminQuizDispatch({
+        type: actions.adminQuiz.QUIZ_DELETED,
+        id,
+      });
+
+      navigate("/admin/dashboard");
+
+      const response = await api.delete(
+        `${import.meta.env.VITE_API_URL}/admin/quizzes/${id}`
+      );
+
+      if (response.status === 200) {
+        toast.success("Quiz deleted successfully");
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error(error.response?.data?.message || "Failed to delete quiz");
     }
   };
 
@@ -183,9 +217,53 @@ const QuizSetPage = () => {
                 </div>
               )}
 
-              <button className="w-full block text-center bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                {id ? "Update Quiz" : "Next"}
-              </button>
+              {showDeleteConfirm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+                    <h3 className="text-lg font-semibold mb-4">
+                      Confirm Delete
+                    </h3>
+                    <p className="text-gray-600 mb-6">
+                      Are you sure you want to delete this question? This action
+                      cannot be undone.
+                    </p>
+                    <div className="flex justify-end space-x-4">
+                      <button
+                        onClick={() => setShowDeleteConfirm(false)}
+                        className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => handleDelete(id)}
+                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-4">
+                {id && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDeleteConfirm(true);
+                    }}
+                    className="w-full block text-center bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    Delete Quiz
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  className="w-full block text-center bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                >
+                  {id ? "Update Quiz" : "Next"}
+                </button>
+              </div>
             </form>
           </div>
         </div>

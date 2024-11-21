@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../../actions";
 import { Icon, PlusIcon } from "../../components/SVG/Icon";
@@ -10,6 +10,7 @@ import useAxios from "../../hooks/useAxios";
 const AdminDashboard = () => {
   const { state: adminQuizState, dispatch } = useAdminQuiz();
   const { api } = useAxios();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch({ type: actions.adminQuiz.DATA_FETCHING });
@@ -34,7 +35,9 @@ const AdminDashboard = () => {
     };
 
     fetchQuiz();
-  }, [api, dispatch]);
+
+    // fetch quiz on location change
+  }, [api, dispatch, location.key]);
 
   return (
     <>

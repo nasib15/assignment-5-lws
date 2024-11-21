@@ -65,8 +65,6 @@ const SingleQuizQuestion = ({
 
   //   To submit the quiz
   const handleSubmit = async () => {
-    console.log(state?.answers);
-
     try {
       const response = await api.post(
         `/quizzes/${state?.quiz?.data?.id}/attempt`,
@@ -79,7 +77,7 @@ const SingleQuizQuestion = ({
         navigate(`/result/${response?.data?.data?.quiz?.id}`);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       toast.error(error.response?.data?.message || "Failed to submit quiz");
     }

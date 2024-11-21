@@ -13,8 +13,6 @@ const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState(null);
   const [sortedLeaderboard, setSortedLeaderboard] = useState([]);
 
-  console.log(leaderboardData);
-  console.log(sortedLeaderboard);
   const { id } = useParams();
   const { api } = useAxios();
   const { auth } = useAuth();

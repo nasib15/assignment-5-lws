@@ -38,6 +38,13 @@ const adminQuizReducer = (state, action) => {
         ),
       };
 
+    case actions.adminQuiz.QUIZ_DELETED:
+      return {
+        ...state,
+        loading: false,
+        quiz: state.quiz.filter((quiz) => quiz.id !== action.id),
+      };
+
     default:
       return state;
   }
