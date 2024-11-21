@@ -33,8 +33,8 @@ const LoginForm = () => {
       if (response.status === 200) {
         const { user, tokens } = response.data.data;
         if (tokens) {
-          const accessToken = tokens.accessToken;
-          const refreshToken = tokens.refreshToken;
+          const accessToken = tokens?.accessToken;
+          const refreshToken = tokens?.refreshToken;
           setAuth({ user, accessToken, refreshToken });
 
           navigate("/");

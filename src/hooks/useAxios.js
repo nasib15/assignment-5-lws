@@ -13,7 +13,10 @@ const useAxios = () => {
     // request interceptor
     const requestInterceptors = api.interceptors.request.use(
       (config) => {
-        config.headers.Authorization = `Bearer ${auth?.accessToken}`;
+        const accessToken = auth?.accessToken;
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
         return config;
       },
       (error) => Promise.reject(error)
@@ -36,9 +39,14 @@ const useAxios = () => {
               { refreshToken }
             );
 
-            const { accessToken } = response.data.data;
+            const { accessToken, refreshToken: updatedRefreshToken } =
+              response.data.data;
 
-            setAuth((prev) => ({ ...prev, accessToken }));
+            setAuth({
+              ...auth,
+              accessToken,
+              refreshToken: updatedRefreshToken,
+            });
 
             // Retry the original request with the new token
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;

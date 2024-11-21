@@ -1,16 +1,22 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../../actions";
 import useAdminQuiz from "../../hooks/useAdminQuiz";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { CheckIcon, CrossIcon } from "../SVG/Icon";
+import { QuestionSkeleton } from "../common/Skeleton";
 
 const Question = ({ question, index, userResultData = {}, onEdit }) => {
   const { auth } = useAuth();
   const { api } = useAxios();
-  const { dispatch } = useAdminQuiz();
+  const { state, dispatch } = useAdminQuiz();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const location = useLocation();
+
+  const isAdminRoute = location.pathname.includes("/admin");
 
   const isAdmin = auth?.user?.role === "admin";
 
@@ -62,6 +68,10 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
     }
     setShowDeleteConfirm(false);
   };
+
+  if (state?.loading) {
+    return <QuestionSkeleton />;
+  }
 
   return (
     <div className="rounded-lg overflow-hidden shadow-sm mb-4">
@@ -127,7 +137,7 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
       )}
 
       {/* admins can delete and edit question */}
-      {isAdmin && (
+      {isAdmin && isAdminRoute && (
         <div className="flex space-x-4 bg-primary/10 px-6 py-2">
           <button
             onClick={() => setShowDeleteConfirm(true)}

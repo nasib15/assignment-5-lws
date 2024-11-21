@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../actions";
 import LogoWhite from "../assets/logo-white.svg";
+import { QuestionSkeleton } from "../components/common/Skeleton";
 import Question from "../components/result/Question";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
@@ -74,22 +75,24 @@ const ResultPage = () => {
     fetchQuiz();
   }, [api, id, quizDispatch]);
 
-  // Add loading state
-  if (resultState?.loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (quizState?.loading) {
-    return <div>Loading...</div>;
-  }
-
   // User attempt
   const userResultData = resultState?.data?.attempts?.find(
     (attempt) => attempt?.user?.id === auth?.user?.id
   );
 
-  if (!userResultData) {
-    return <div>Loading.....</div>;
+  if (resultState?.loading || quizState?.loading || !userResultData) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="h-full animate-pulse bg-gray-200 rounded-lg"></div>
+          <div className="space-y-2">
+            {[1, 2].map((i) => (
+              <QuestionSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const { score, correct, wrong, total } = calculateResult(
@@ -176,7 +179,7 @@ const ResultPage = () => {
             </div>
           </div>
 
-          <div className="max-h-screen md:w-1/2 flex items-center justify-center h-full p-8">
+          <div className="max-h-screen w-full lg:w-1/2 h-full p-8">
             <div className="h-[calc(100vh-50px)] overflow-y-scroll ">
               <div className="px-4">
                 {questions?.map((question, index) => (

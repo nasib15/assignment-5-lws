@@ -8,6 +8,8 @@ const AuthProvider = ({ children }) => {
     localStorageAuth ? JSON.parse(localStorageAuth) : {}
   );
 
+  console.log(auth);
+
   // Update localstorage whenever auth changes
   useEffect(() => {
     // check if auth is empty object

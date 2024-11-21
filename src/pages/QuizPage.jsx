@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../actions";
 import Avatar from "../assets/profile.png";
+import { QuestionSkeleton } from "../components/common/Skeleton";
 import SingleQuizQuestion from "../components/quiz/SingleQuizQuestion";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
@@ -45,6 +46,19 @@ const QuizPage = () => {
 
     fetchQuiz();
   }, [api, dispatch, id]);
+
+  if (state?.loading) {
+    return (
+      <div className="container mx-auto min-h-[calc(100vh-12rem)] flex flex-col">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="lg:col-span-1 animate-pulse bg-gray-200 rounded-lg h-64"></div>
+          <div className="lg:col-span-2">
+            <QuestionSkeleton />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

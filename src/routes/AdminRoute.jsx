@@ -9,19 +9,19 @@ const AdminRoute = () => {
 
   const isAdmin = user?.role === "admin";
 
+  if (!auth?.accessToken || !isAdmin) {
+    return <Navigate to="/login" />;
+  }
+
   return (
-    <>
-      {auth?.accessToken && isAdmin ? (
-        <AdminQuizProvider>
-          <div className="bg-gray-100 min-h-screen flex">
-            <AdminLeftNavbar />
-            <Outlet />
-          </div>
-        </AdminQuizProvider>
-      ) : (
-        <Navigate to="/" />
-      )}
-    </>
+    <AdminQuizProvider>
+      <div className="min-h-screen flex">
+        <AdminLeftNavbar />
+        <div className="flex-1">
+          <Outlet />
+        </div>
+      </div>
+    </AdminQuizProvider>
   );
 };
 export default AdminRoute;

@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../../actions";
+import { AdminDashboardSkeleton } from "../../components/common/Skeleton";
 import { Icon, PlusIcon } from "../../components/SVG/Icon";
 import useAdminQuiz from "../../hooks/useAdminQuiz";
 import useAxios from "../../hooks/useAxios";
@@ -38,6 +39,10 @@ const AdminDashboard = () => {
 
     // fetch quiz on location change
   }, [api, dispatch, location.key]);
+
+  if (adminQuizState?.loading) {
+    return <AdminDashboardSkeleton />;
+  }
 
   return (
     <>

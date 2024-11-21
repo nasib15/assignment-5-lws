@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { ProfileBannerSkeleton } from "../components/common/Skeleton";
 import LeaderboardRow from "../components/leaderboard/LeaderboardRow";
 import MyLeaderboardCard from "../components/leaderboard/MyLeaderboardCard";
 import useAuth from "../hooks/useAuth";
@@ -12,6 +13,8 @@ import calculateResult from "../utils/calculateResult";
 const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState(null);
   const [sortedLeaderboard, setSortedLeaderboard] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
   const { api } = useAxios();
@@ -40,6 +43,8 @@ const Leaderboard = () => {
         toast.error(
           error.response?.data?.message || "Failed to fetch leaderboard"
         );
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -56,6 +61,26 @@ const Leaderboard = () => {
     sortedLeaderboard.findIndex(
       (attempt) => attempt?.user?.id === auth?.user?.id
     ) + 1;
+
+  if (loading) {
+    return (
+      <main className="min-h-[calc(100vh-50px)] flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl overflow-hidden">
+          <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <ProfileBannerSkeleton />
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div
+                  key={i}
+                  className="h-16 bg-gray-200 rounded-lg animate-pulse"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
