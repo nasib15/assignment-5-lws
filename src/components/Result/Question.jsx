@@ -5,6 +5,7 @@ import { actions } from "../../actions";
 import useAdminQuiz from "../../hooks/useAdminQuiz";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
+import getAnswerStyle from "../../utils/getAnswerStyle";
 import { CheckIcon, CrossIcon } from "../SVG/Icon";
 import { QuestionSkeleton } from "../common/Skeleton";
 
@@ -15,9 +16,7 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const location = useLocation();
-
   const isAdminRoute = location.pathname.includes("/admin");
-
   const isAdmin = auth?.user?.role === "admin";
 
   // find correct answer
@@ -31,17 +30,6 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
     (answer) => answer?.question_id === question?.id
   )?.answer;
 
-  // get color style based on the selected answer and correct answer
-  const getAnswerStyle = (option) => {
-    if (option === correctAnswer) {
-      return "bg-green-100 flex justify-between items-center";
-    }
-    if (option === selectedAnswer && option !== correctAnswer) {
-      return "bg-red-100 flex justify-between items-center";
-    }
-    return "flex items-center";
-  };
-
   const handleDelete = async () => {
     try {
       const response = await api.delete(
@@ -49,7 +37,6 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
       );
 
       if (response.status === 200) {
-        // Fetch updated quiz data after deletion
         const updatedQuizResponse = await api.get(
           `${import.meta.env.VITE_API_URL}/admin/quizzes`
         );
@@ -74,71 +61,56 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
   }
 
   return (
-    <div className="rounded-lg overflow-hidden shadow-sm mb-4">
-      <div className="bg-white p-6 !pb-2">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">
-            {index + 1}. {question?.question}
-          </h3>
-        </div>
-        <div className="space-y-2">
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+      <div className="p-6">
+        <h3 className="text-lg font-semibold mb-4">
+          <span className="text-primary mr-2">Question {index + 1}.</span>
+          {question?.question}
+        </h3>
+
+        <div className="space-y-3">
           {question?.options.map((option, idx) => (
-            <label
+            <div
               key={idx}
-              className={`space-x-3 p-2 rounded ${getAnswerStyle(option)}`}
+              className={getAnswerStyle(option, selectedAnswer, correctAnswer)}
             >
               <div className="flex items-center space-x-3">
                 <input
                   type="radio"
                   name={`question-${question?.id}`}
-                  className="form-radio text-buzzr-purple"
+                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
                   disabled
                   checked={
                     option === selectedAnswer || option === correctAnswer
                   }
                 />
-                <span>{option}</span>
+                <span className="font-medium">{option}</span>
               </div>
-              {option === correctAnswer && <CheckIcon />}
-              {option === selectedAnswer && option !== correctAnswer && (
-                <CrossIcon />
-              )}
-            </label>
+
+              <div className="flex items-center">
+                {option === correctAnswer && (
+                  <span className="flex items-center text-green-600">
+                    <CheckIcon className="w-5 h-5 mr-1" />
+                    {option === selectedAnswer
+                      ? "Correct Answer"
+                      : "Right Answer"}
+                  </span>
+                )}
+                {option === selectedAnswer && option !== correctAnswer && (
+                  <span className="flex items-center text-red-600">
+                    <CrossIcon className="w-5 h-5 mr-1" />
+                    Your Answer
+                  </span>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* delete confirmation dialog */}
-
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-            <h3 className="text-lg font-semibold mb-4">Confirm Delete</h3>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this question? This action cannot
-              be undone.
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* admins can delete and edit question */}
+      {/* only for admins */}
       {isAdmin && isAdminRoute && (
-        <div className="flex space-x-4 bg-primary/10 px-6 py-2">
+        <div className="flex space-x-4 bg-gray-50 px-6 py-3 border-t">
           <button
             onClick={() => setShowDeleteConfirm(true)}
             className="text-red-600 hover:text-red-800 font-medium"
@@ -151,6 +123,33 @@ const Question = ({ question, index, userResultData = {}, onEdit }) => {
           >
             Edit Question
           </button>
+        </div>
+      )}
+
+      {/* Delete confirmation dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Confirm Delete</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this question? This action cannot
+              be undone.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import hideIcon from "../../assets/hide.png";
 import showIcon from "../../assets/view.png";
 import Field from "./Field";
@@ -36,6 +37,8 @@ const RegistrationForm = () => {
           { full_name, email, password, role: "admin" }
         );
         if (response.status === 201) {
+          toast.success("Registered successfully");
+
           navigate("/login");
         }
       } else {
@@ -44,6 +47,8 @@ const RegistrationForm = () => {
           { full_name, email, password }
         );
         if (response.status === 201) {
+          toast.success("Registered successfully");
+
           navigate("/login");
         }
       }
@@ -53,6 +58,19 @@ const RegistrationForm = () => {
         type: "random",
         message: `Something went wrong: ${error.message}`,
       });
+    }
+  };
+
+  // press enter to go to the next field
+
+  const handleKeyDown = (e, nextFieldId) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const nextField = document.getElementById(nextFieldId);
+
+      if (nextField) {
+        nextField.focus();
+      }
     }
   };
 
@@ -71,6 +89,7 @@ const RegistrationForm = () => {
                 errors.full_name ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="John Doe"
+              onKeyDown={(e) => handleKeyDown(e, "email")}
             />
           </Field>
         </div>
@@ -87,6 +106,7 @@ const RegistrationForm = () => {
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Email address"
+              onKeyDown={(e) => handleKeyDown(e, "password")}
             />
           </Field>
         </div>
@@ -113,6 +133,7 @@ const RegistrationForm = () => {
                 errors.password ? "border-red-500" : "border-gray-300 "
               }`}
               placeholder="Password"
+              onKeyDown={(e) => handleKeyDown(e, "confirm_password")}
             />
             <div className="absolute top-12 right-3 cursor-pointer">
               <img
@@ -140,6 +161,7 @@ const RegistrationForm = () => {
                 errors.confirm_password ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Confirm Password"
+              onKeyDown={(e) => handleKeyDown(e, null)}
             />
             <div className="absolute top-12 right-3 cursor-pointer">
               <img

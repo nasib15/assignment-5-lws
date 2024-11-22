@@ -11,12 +11,17 @@ const PrivateRoute = () => {
   const location = useLocation();
   const isResultPage = location.pathname.includes("/result/");
 
+  const isAdmin = auth?.user?.role === "admin";
+
   if (!auth?.accessToken) {
     return <Navigate to="/login" />;
   }
 
-  // If user is admin, wrap with AdminQuizProvider
-  if (auth?.user?.role === "admin") {
+  // differentiating admin and user provider because the admins need the adminquizprovider where as i don't want to provide the users also the adminquizprovider
+
+  // admin specific
+
+  if (isResultPage && isAdmin) {
     return (
       <AdminQuizProvider>
         <QuizProvider>
@@ -27,6 +32,26 @@ const PrivateRoute = () => {
       </AdminQuizProvider>
     );
   }
+
+  if (isAdmin) {
+    return (
+      <div className="bg-[#F5F3FF] min-h-screen flex flex-col">
+        <div className="container mx-auto py-3 flex-1 flex flex-col">
+          <Navbar />
+          <AdminQuizProvider>
+            <QuizProvider>
+              <ResultProvider>
+                <Outlet />
+              </ResultProvider>
+            </QuizProvider>
+          </AdminQuizProvider>
+          <Footer />
+        </div>
+      </div>
+    );
+  }
+
+  // user specific
 
   if (isResultPage) {
     return (

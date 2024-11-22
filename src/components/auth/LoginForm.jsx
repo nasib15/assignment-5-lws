@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import hideIcon from "../../assets/hide.png";
 import showIcon from "../../assets/view.png";
 import useAuth from "../../hooks/useAuth";
@@ -37,6 +38,8 @@ const LoginForm = () => {
           const refreshToken = tokens?.refreshToken;
           setAuth({ user, accessToken, refreshToken });
 
+          toast.success("Logged in successfully");
+
           navigate("/");
         }
       }
@@ -46,6 +49,20 @@ const LoginForm = () => {
         type: "random",
         message: `Invalid username or password`,
       });
+    }
+  };
+
+  // press enter to go to the next field
+  const handleKeyDown = (e, nextFieldId) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const nextField = document.getElementById(nextFieldId);
+
+      if (nextField) {
+        nextField.focus();
+      } else {
+        handleSubmit(onSubmit)();
+      }
     }
   };
 
@@ -67,6 +84,7 @@ const LoginForm = () => {
               errors.email ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Email address"
+            onKeyDown={(e) => handleKeyDown(e, "password")}
           />
         </Field>
       </div>
@@ -86,6 +104,7 @@ const LoginForm = () => {
               errors.password ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="Password"
+            onKeyDown={(e) => handleKeyDown(e, null)}
           />
           <div className="absolute top-12 right-3 cursor-pointer">
             <img

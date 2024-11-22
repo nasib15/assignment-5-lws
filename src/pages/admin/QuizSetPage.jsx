@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { actions } from "../../actions";
 import { BackIcon } from "../../components/SVG/Icon";
 import Field from "../../components/auth/Field";
+import { QuizSetPageSkeleton } from "../../components/common/Skeleton";
 import useAdminQuiz from "../../hooks/useAdminQuiz";
 import useAxios from "../../hooks/useAxios";
 
@@ -114,6 +115,10 @@ const QuizSetPage = () => {
       toast.error(error.response?.data?.message || "Failed to delete quiz");
     }
   };
+
+  if (adminQuizState?.loading) {
+    return <QuizSetPageSkeleton />;
+  }
 
   return (
     <div className="bg-[#F5F3FF] min-h-screen flex">

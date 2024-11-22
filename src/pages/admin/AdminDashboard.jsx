@@ -40,6 +40,7 @@ const AdminDashboard = () => {
     // fetch quiz on location change
   }, [api, dispatch, location.key]);
 
+  // loading skeleton
   if (adminQuizState?.loading) {
     return <AdminDashboardSkeleton />;
   }

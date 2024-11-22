@@ -38,6 +38,21 @@ const QuizList = () => {
     );
   }
 
+  if (!quizzes?.length) {
+    return (
+      <div className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-4">
+        <div className="flex flex-col items-center justify-center h-[400px] bg-gray-50 rounded-lg">
+          <h3 className="text-3xl font-bold text-gray-700 mb-3">
+            No Quizzes Available
+          </h3>
+          <p className="text-gray-500 text-lg">
+            Please check back later for new content.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {quizzes?.map((quiz) => (

@@ -4,8 +4,9 @@ import Avatar from "../../assets/profile.png";
 import useAuth from "../../hooks/useAuth";
 
 const AdminLeftNavbar = () => {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const { user } = auth;
+
   return (
     <aside className="w-64 bg-primary p-6 flex flex-col">
       <Link to="/" className="mb-10">
@@ -51,8 +52,8 @@ const AdminLeftNavbar = () => {
 
           <li>
             <a
-              href="#"
-              className="block py-2 px-4 rounded-lg text-gray-100 hover:bg-gray-100 hover:text-primary"
+              onClick={() => setAuth({})}
+              className="block py-2 px-4 rounded-lg text-gray-100 hover:bg-gray-100 hover:text-primary hover:cursor-pointer"
             >
               Logout
             </a>

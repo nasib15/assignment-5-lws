@@ -12,6 +12,7 @@ const SingleQuizQuestion = ({
   const { state, dispatch } = useQuiz();
   const { api } = useAxios();
   const [randomizedOptions, setRandomizedOptions] = useState([]);
+
   const navigate = useNavigate();
 
   const questions = state?.quiz?.data?.questions || [];
@@ -71,7 +72,6 @@ const SingleQuizQuestion = ({
         { answers: state.answers }
       );
 
-      //   navigate(`/result/${state?.quiz?.data?.id}`);
       if (response.status === 200) {
         dispatch({ type: actions.quiz.ANSWER_SUBMITTED, data: state.answers });
         navigate(`/result/${response?.data?.data?.quiz?.id}`);
@@ -101,26 +101,27 @@ const SingleQuizQuestion = ({
         <h3 className="text-2xl font-bold mb-6">{currentQuestion?.question}</h3>
 
         <div className="space-y-4">
-          {randomizedOptions.map((option, index) => (
-            <label
-              key={index}
-              className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:border-primary transition-colors ${
-                state?.answers[questionID] === option
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200"
-              }`}
-            >
-              <input
-                type="radio"
-                name="answer"
-                value={option}
-                checked={state?.answers[questionID] === option}
-                onChange={() => handleAnswerSelect(option)}
-                className="text-primary focus:ring-primary"
-              />
-              <span className="text-gray-700">{option}</span>
-            </label>
-          ))}
+          {randomizedOptions.map((option, index) => {
+            const uniqueId = `${questionID}-${index}`;
+            return (
+              <label
+                key={uniqueId}
+                htmlFor={uniqueId}
+                className="flex items-center space-x-3 p-4 border rounded-lg cursor-pointer hover:border-primary transition-colors"
+              >
+                <input
+                  type="radio"
+                  id={uniqueId}
+                  name={`question-${questionID}`}
+                  value={option}
+                  checked={state?.answers[questionID] === option}
+                  onChange={() => handleAnswerSelect(option)}
+                  className="text-primary focus:ring-primary"
+                />
+                <span className="text-gray-700">{option}</span>
+              </label>
+            );
+          })}
         </div>
       </div>
 

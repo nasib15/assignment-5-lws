@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { actions } from "../../actions";
 import Field from "../../components/auth/Field";
+import { QuizSetEntrySkeleton } from "../../components/common/Skeleton";
+import QuizSetFallback from "../../components/quiz-set/QuizSetFallback";
 import Question from "../../components/result/Question";
 import { ArrowIcon } from "../../components/SVG/Icon";
 import useAdminQuiz from "../../hooks/useAdminQuiz";
@@ -137,6 +139,10 @@ const QuizSetEntry = () => {
     fetchQuiz();
   }, [api, dispatch]);
 
+  if (adminQuizState?.loading) {
+    return <QuizSetEntrySkeleton />;
+  }
+
   return (
     <div className="bg-[#F5F3FF] min-h-screen flex flex-1">
       <main className="md:flex-grow px-4 sm:px-6 lg:px-8 py-8">
@@ -144,25 +150,28 @@ const QuizSetEntry = () => {
           <nav className="text-sm mb-4" aria-label="Breadcrumb">
             <ol className="list-none p-0 inline-flex">
               <li className="flex items-center">
-                <a href="#" className="text-gray-600 hover:text-buzzr-purple">
+                <Link
+                  to="/admin/dashboard"
+                  className="text-gray-600 hover:text-buzzr-purple"
+                >
                   Home
-                </a>
+                </Link>
                 <ArrowIcon />
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to={`/admin/quiz-set/${id}`}
                   className="text-gray-600 hover:text-buzzr-purple"
                   aria-current="page"
                 >
-                  Quizzes
-                </a>
+                  Quiz set
+                </Link>
               </li>
             </ol>
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-8 lg:gap-12">
-            <div className="">
+            <div>
               <h2 className="text-3xl font-bold mb-4">{thisQuestion?.title}</h2>
               <div className="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-4">
                 Total number of questions : {thisQuestion?.Questions?.length}
@@ -310,14 +319,18 @@ const QuizSetEntry = () => {
             </div>
 
             <div className="px-4">
-              {thisQuestion?.Questions?.map((question, index) => (
-                <Question
-                  key={question.id}
-                  index={index}
-                  question={question}
-                  onEdit={handleEditQuestion}
-                />
-              ))}
+              {!thisQuestion?.Questions?.length ? (
+                <QuizSetFallback />
+              ) : (
+                thisQuestion?.Questions?.map((question, index) => (
+                  <Question
+                    key={question.id}
+                    index={index}
+                    question={question}
+                    onEdit={handleEditQuestion}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>
