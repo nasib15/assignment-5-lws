@@ -12,12 +12,16 @@ import { QuestionSkeleton } from "../common/Skeleton";
 const Question = ({ question, index, userResultData = {}, onEdit }) => {
   const { auth } = useAuth();
   const { api } = useAxios();
-  const { state, dispatch } = useAdminQuiz();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const location = useLocation();
   const isAdminRoute = location.pathname.includes("/admin");
   const isAdmin = auth?.user?.role === "admin";
+
+  const adminQuizContext = useAdminQuiz();
+  const { state, dispatch } = isAdmin
+    ? adminQuizContext
+    : { state: null, dispatch: null };
 
   // find correct answer
   const correctAnswer =

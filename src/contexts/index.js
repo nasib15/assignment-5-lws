@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-const AuthContext = createContext();
-const QuizContext = createContext();
-const AdminQuizContext = createContext();
-const ResultContext = createContext();
+const AuthContext = createContext(null);
+const QuizContext = createContext(null);
+const AdminQuizContext = createContext(null);
+const ResultContext = createContext(null);
 
 export { AdminQuizContext, AuthContext, QuizContext, ResultContext };
