@@ -4,6 +4,11 @@ import { toast } from "react-toastify";
 import { actions } from "../../actions";
 import useAxios from "../../hooks/useAxios";
 import useQuiz from "../../hooks/useQuiz";
+import {
+  clearQuizProgress,
+  loadQuizProgress,
+  saveQuizProgress,
+} from "../../utils/quizStorage";
 
 const SingleQuizQuestion = ({
   currentQuestionIndex,
@@ -16,19 +21,43 @@ const SingleQuizQuestion = ({
   const navigate = useNavigate();
 
   const questions = state?.quiz?.data?.questions || [];
+
   const questionID = questions[currentQuestionIndex]?.id;
+
   const currentQuestion = questions[currentQuestionIndex];
+
   const isLastQuestion = currentQuestionIndex === questions?.length - 1;
+
+  const quizId = state?.quiz?.data?.id;
 
   const shuffleOptions = (options) => {
     return [...options].sort(() => Math.random() - 0.5);
   };
 
-  // keep object of answers so that answers can be submitted later
+  // Load saved progress on component mount
+  useEffect(() => {
+    const savedProgress = loadQuizProgress(quizId);
+
+    if (savedProgress) {
+      dispatch({
+        type: actions.quiz.LOAD_PROGRESS,
+        data: savedProgress,
+      });
+      setCurrentQuestionIndex(savedProgress.currentQuestionIndex);
+    }
+  }, [quizId]);
+
+  // Save progress when answer is selected
   const handleAnswerSelect = (answer) => {
     dispatch({
       type: actions.quiz.ANSWER_SELECTED,
       data: { [questionID]: answer },
+    });
+
+    // Save progress to localStorage
+    saveQuizProgress(quizId, {
+      currentQuestionIndex,
+      answers: { ...state.answers, [questionID]: answer },
     });
   };
 
@@ -67,13 +96,14 @@ const SingleQuizQuestion = ({
   //   To submit the quiz
   const handleSubmit = async () => {
     try {
-      const response = await api.post(
-        `/quizzes/${state?.quiz?.data?.id}/attempt`,
-        { answers: state.answers }
-      );
+      const response = await api.post(`/quizzes/${quizId}/attempt`, {
+        answers: state.answers,
+      });
 
       if (response.status === 200) {
+        clearQuizProgress(quizId);
         dispatch({ type: actions.quiz.ANSWER_SUBMITTED, data: state.answers });
+
         navigate(`/result/${response?.data?.data?.quiz?.id}`);
       }
     } catch (error) {
@@ -84,6 +114,7 @@ const SingleQuizQuestion = ({
   };
 
   //   To initiate the questions options for the first time as well as set dependencies so that useEffect can trigger
+
   useEffect(() => {
     if (currentQuestion?.options) {
       setRandomizedOptions(shuffleOptions(currentQuestion.options));
@@ -132,7 +163,7 @@ const SingleQuizQuestion = ({
           className={`px-6 py-2 rounded-md ${
             currentQuestionIndex === 0
               ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-primary text-white hover:bg-primary/90"
+              : "bg-blue-600 hover:bg-blue-700 text-white hover:bg-primary/90"
           }`}
         >
           Previous
@@ -150,7 +181,7 @@ const SingleQuizQuestion = ({
           <button
             onClick={handleNext}
             disabled={!state?.answers[questionID]}
-            className="px-6 py-2 rounded-md bg-primary text-white hover:bg-primary/90 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+            className="px-6 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white  disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             Next Question
           </button>

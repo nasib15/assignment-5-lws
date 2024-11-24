@@ -5,10 +5,12 @@ import { toast } from "react-toastify";
 import { actions } from "../actions";
 import Avatar from "../assets/profile.png";
 import { QuestionSkeleton } from "../components/common/Skeleton";
+import QuizResumeBanner from "../components/quiz/QuizResumeBanner";
 import SingleQuizQuestion from "../components/quiz/SingleQuizQuestion";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import useQuiz from "../hooks/useQuiz";
+import { clearQuizProgress, loadQuizProgress } from "../utils/quizStorage";
 
 const QuizPage = () => {
   // user info
@@ -22,7 +24,45 @@ const QuizPage = () => {
   // axios interceptor api
   const { api } = useAxios();
 
+  const [showResumeBanner, setShowResumeBanner] = useState(false);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  useEffect(() => {
+    const savedProgress = loadQuizProgress(id);
+
+    if (savedProgress) {
+      setShowResumeBanner(true);
+    }
+  }, [id]);
+
+  const handleResume = () => {
+    const savedProgress = loadQuizProgress(id);
+
+    if (savedProgress) {
+      dispatch({
+        type: actions.quiz.LOAD_PROGRESS,
+        data: savedProgress,
+      });
+
+      setCurrentQuestionIndex(savedProgress.currentQuestionIndex);
+    }
+
+    setShowResumeBanner(false);
+  };
+
+  const handleStartNew = () => {
+    clearQuizProgress(id);
+
+    setShowResumeBanner(false);
+
+    setCurrentQuestionIndex(0);
+
+    dispatch({
+      type: actions.quiz.LOAD_PROGRESS,
+      data: { currentQuestionIndex: 0, answers: {} },
+    });
+  };
 
   // fetch quiz data
   useEffect(() => {
@@ -66,51 +106,58 @@ const QuizPage = () => {
         <title>Quizzes | Quiz</title>
       </Helmet>
       <main className="flex-1">
-        <div className="container mx-auto min-h-[calc(100vh-12rem)] flex flex-col">
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div className="lg:col-span-1 bg-white rounded-md p-6 flex flex-col">
-              <div>
-                <h2 className="text-4xl font-bold mb-4">
-                  {state?.quiz?.data?.title}
-                </h2>
-                <p className="text-gray-600 mb-4">
-                  {state?.quiz?.data?.description}
-                </p>
+        <div className="container mx-auto">
+          <QuizResumeBanner
+            savedProgress={showResumeBanner}
+            onResume={handleResume}
+            onStartNew={handleStartNew}
+          />
+          <div className="container mx-auto min-h-[calc(100vh-12rem)] flex flex-col">
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-1 bg-white rounded-md p-6 flex flex-col">
+                <div>
+                  <h2 className="text-4xl font-bold mb-4">
+                    {state?.quiz?.data?.title}
+                  </h2>
+                  <p className="text-gray-600 mb-4">
+                    {state?.quiz?.data?.description}
+                  </p>
 
-                <div className="flex flex-col">
-                  <div className="w-fit bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-2">
-                    Total number of questions :{" "}
-                    {state?.quiz?.data?.questions?.length}
-                  </div>
+                  <div className="flex flex-col">
+                    <div className="w-fit bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-2">
+                      Total number of questions :{" "}
+                      {state?.quiz?.data?.questions?.length}
+                    </div>
 
-                  <div className="w-fit bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-2">
-                    Participation : {currentQuestionIndex + 1}
-                  </div>
+                    <div className="w-fit bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-2">
+                      Participation : {currentQuestionIndex + 1}
+                    </div>
 
-                  <div className="w-fit bg-gray-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-2">
-                    Remaining :{" "}
-                    {state?.quiz?.data?.questions?.length -
-                      (currentQuestionIndex + 1)}
+                    <div className="w-fit bg-gray-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full inline-block mb-2">
+                      Remaining :{" "}
+                      {state?.quiz?.data?.questions?.length -
+                        (currentQuestionIndex + 1)}
+                    </div>
                   </div>
+                </div>
+
+                <div className="mt-auto flex items-center">
+                  <img
+                    src={Avatar}
+                    alt={user?.full_name}
+                    className="w-10 h-10 rounded-full mr-3 object-cover"
+                  />
+                  <span className="text-black font-semibold">
+                    {user?.full_name}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-auto flex items-center">
-                <img
-                  src={Avatar}
-                  alt={user?.full_name}
-                  className="w-10 h-10 rounded-full mr-3 object-cover"
-                />
-                <span className="text-black font-semibold">
-                  {user?.full_name}
-                </span>
-              </div>
+              <SingleQuizQuestion
+                currentQuestionIndex={currentQuestionIndex}
+                setCurrentQuestionIndex={setCurrentQuestionIndex}
+              />
             </div>
-
-            <SingleQuizQuestion
-              currentQuestionIndex={currentQuestionIndex}
-              setCurrentQuestionIndex={setCurrentQuestionIndex}
-            />
           </div>
         </div>
       </main>

@@ -4,6 +4,7 @@ const initialState = {
   quiz: {},
   answers: {},
   loading: false,
+  currentQuestionIndex: 0,
 };
 
 const quizReducer = (state, action) => {
@@ -26,6 +27,20 @@ const quizReducer = (state, action) => {
         ...state,
         loading: false,
         answers: action.data,
+      };
+
+    case actions.quiz.SAVE_PROGRESS:
+      return {
+        ...state,
+        currentQuestionIndex: action.data.currentQuestionIndex,
+        answers: action.data.answers,
+      };
+
+    case actions.quiz.LOAD_PROGRESS:
+      return {
+        ...state,
+        currentQuestionIndex: action.data.currentQuestionIndex,
+        answers: action.data.answers,
       };
 
     default:
