@@ -108,7 +108,11 @@ const ResultPage = () => {
       <div className="bg-background text-foreground min-h-screen">
         <div className="flex min-h-screen overflow-hidden">
           <Link to="/">
-            <img src={LogoWhite} className="max-h-11 fixed left-6 top-6 z-50" />
+            <img
+              src={LogoWhite}
+              className="max-h-11 fixed left-6 top-6 z-50"
+              alt="logo"
+            />
           </Link>
           <div className="max-h-screen overflow-hidden hidden lg:flex lg:w-1/2 bg-primary flex-col justify-center p-12 relative">
             <div>

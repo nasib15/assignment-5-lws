@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <header className="flex justify-between items-center mb-8">
       <Link to="/">
-        <img src={Logo} className="h-7" />
+        <img src={Logo} className="h-7" alt="logo" />
       </Link>
       <div className="flex items-center gap-3">
         {auth?.user ? (
@@ -26,7 +26,11 @@ const Navbar = () => {
               </Link>
             )}
             <button>
-              <img src={ProfilePic} className="w-10 h-10 rounded-full" />
+              <img
+                src={ProfilePic}
+                className="w-10 h-10 rounded-full"
+                alt="profile"
+              />
             </button>
           </>
         ) : (

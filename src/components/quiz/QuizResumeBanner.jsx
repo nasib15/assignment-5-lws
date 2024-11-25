@@ -8,12 +8,10 @@ const QuizResumeBanner = ({ savedProgress, onResume, onStartNew }) => {
     <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-50 rounded-xl shadow-sm border border-blue-100/50 p-6 mb-6">
       <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-start space-x-4">
-          {/* Icon */}
           <div className="hidden sm:flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100/80 text-blue-600">
             <TimeIcon />
           </div>
 
-          {/* Text */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900">
               Resume Your Quiz
@@ -25,7 +23,6 @@ const QuizResumeBanner = ({ savedProgress, onResume, onStartNew }) => {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={onStartNew}

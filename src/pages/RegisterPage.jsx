@@ -17,7 +17,7 @@ const RegisterPage = () => {
           <div className="hidden  lg:flex lg:w-1/2 bg-primary flex-col justify-between p-12  h-full fixed left-0 top-0">
             <div className="text-white">
               <Link to="/">
-                <img src={LogoWhite} className="h-8" />
+                <img src={LogoWhite} className="h-8" alt="logo" />
               </Link>
 
               <img
@@ -44,7 +44,7 @@ const RegisterPage = () => {
             <div className="w-full max-w-lg ">
               <h2 className="text-3xl font-bold mb-3 flex gap-2 items-center">
                 <span>Welcome to</span>
-                <img src={LogoViolet} className="h-7" />
+                <img src={LogoViolet} className="h-7" alt="logo" />
               </h2>
               <h1 className="text-4xl font-bold mb-6">Sign Up</h1>
 

@@ -10,7 +10,7 @@ const AdminLeftNavbar = () => {
   return (
     <aside className="w-64 bg-primary p-6 flex flex-col">
       <Link to="/" className="mb-10">
-        <img src={Logo} className="h-7" />
+        <img src={Logo} className="h-7" alt="logo" />
       </Link>
       <nav className="flex-grow">
         <ul className="space-y-2">

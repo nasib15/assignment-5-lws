@@ -29,7 +29,7 @@ const QuizCard = ({ quiz }) => {
       )}
       <img
         src={thumbnail}
-        alt="JavaScript Hoisting"
+        alt={title}
         className="w-full h-full object-cover rounded mb-4"
       />
     </Link>
