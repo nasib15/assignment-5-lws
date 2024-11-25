@@ -25,10 +25,12 @@ const LoginForm = () => {
   };
 
   const onSubmit = async (formData) => {
+    const { email, password } = formData;
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/login`,
-        formData
+        { email: email.trim(), password: password.trim() }
       );
 
       if (response.status === 200) {

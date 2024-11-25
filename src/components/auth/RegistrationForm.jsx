@@ -23,7 +23,7 @@ const RegistrationForm = () => {
 
   const onSubmit = async (formData) => {
     const { full_name, email, password, confirm_password, admin } = formData;
-    if (password !== confirm_password) {
+    if (password.trim() !== confirm_password.trim()) {
       setError("password", {
         message: "Passwords do not match",
       });
@@ -34,7 +34,12 @@ const RegistrationForm = () => {
       if (admin) {
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/auth/register`,
-          { full_name, email, password, role: "admin" }
+          {
+            full_name: full_name.trim(),
+            email: email.trim(),
+            password: password.trim(),
+            role: "admin",
+          }
         );
         if (response.status === 201) {
           toast.success("Registered successfully");
@@ -44,7 +49,11 @@ const RegistrationForm = () => {
       } else {
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/auth/register`,
-          { full_name, email, password }
+          {
+            full_name: full_name.trim(),
+            email: email.trim(),
+            password: password.trim(),
+          }
         );
         if (response.status === 201) {
           toast.success("Registered successfully");

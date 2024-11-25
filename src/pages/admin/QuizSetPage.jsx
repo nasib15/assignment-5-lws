@@ -32,9 +32,9 @@ const QuizSetPage = () => {
     if (id) {
       const existingQuiz = adminQuizState?.quiz?.find((quiz) => quiz.id === id);
       if (existingQuiz) {
-        setValue("title", existingQuiz.title);
-        setValue("description", existingQuiz.description);
-        setValue("status", existingQuiz.status);
+        setValue("title", existingQuiz.title.trim());
+        setValue("description", existingQuiz.description.trim());
+        setValue("status", existingQuiz.status.trim());
       }
     }
 
@@ -50,13 +50,13 @@ const QuizSetPage = () => {
     try {
       let response;
 
-      const { title, status } = formData;
+      const { title, description, status } = formData;
 
       if (id) {
         // Update existing quiz
         response = await api.patch(
           `${import.meta.env.VITE_API_URL}/admin/quizzes/${id}`,
-          { title, status }
+          { title: title.trim(), status: status.trim() }
         );
 
         if (response.status === 200) {
@@ -67,13 +67,20 @@ const QuizSetPage = () => {
         // Create new quiz
         response = await api.post(
           `${import.meta.env.VITE_API_URL}/admin/quizzes`,
-          formData
+          {
+            title: title.trim(),
+            description: description.trim(),
+          }
         );
 
         if (response.status === 201) {
           adminQuizDispatch({
             type: actions.adminQuiz.QUIZ_TOPIC_SUBMITTED,
-            data: formData,
+            data: {
+              title: title.trim(),
+              description: description.trim(),
+              status: status.trim(),
+            },
           });
 
           toast.success("Quiz topic submitted successfully");
