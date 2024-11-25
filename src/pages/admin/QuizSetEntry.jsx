@@ -58,14 +58,14 @@ const QuizSetEntry = () => {
 
     const options = [];
     for (let i = 1; i <= 4; i++) {
-      options.push(formData[`optionText${i}`]);
+      options.push(formData[`optionText${i}`].trim());
     }
 
     // final question data for the api post request
     const questionData = {
-      question: formData.quizTitle,
+      question: formData.quizTitle.trim(),
       options,
-      correctAnswer: formData[`optionText${formData.correctAnswer}`],
+      correctAnswer: formData[`optionText${formData.correctAnswer}`].trim(),
     };
 
     // api call to create the question
