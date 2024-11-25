@@ -187,6 +187,7 @@ const QuizSetEntry = () => {
                   {thisQuestion?.description}
                 </p>
 
+                {/* quiz form */}
                 <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                   <h2 className="text-xl font-bold text-foreground">
                     {isEditing ? "Update Quiz" : "Create Quiz"}
@@ -327,6 +328,7 @@ const QuizSetEntry = () => {
                 </form>
               </div>
 
+              {/* questions */}
               <div className="px-4">
                 {!thisQuestion?.Questions?.length ? (
                   <QuizSetFallback />

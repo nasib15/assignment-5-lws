@@ -20,15 +20,12 @@ const SingleQuizQuestion = ({
 
   const navigate = useNavigate();
 
+  const quizId = state?.quiz?.data?.id;
   const questions = state?.quiz?.data?.questions || [];
-
   const questionID = questions[currentQuestionIndex]?.id;
 
   const currentQuestion = questions[currentQuestionIndex];
-
   const isLastQuestion = currentQuestionIndex === questions?.length - 1;
-
-  const quizId = state?.quiz?.data?.id;
 
   const shuffleOptions = (options) => {
     return [...options].sort(() => Math.random() - 0.5);

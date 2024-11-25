@@ -29,13 +29,6 @@ const quizReducer = (state, action) => {
         answers: action.data,
       };
 
-    case actions.quiz.SAVE_PROGRESS:
-      return {
-        ...state,
-        currentQuestionIndex: action.data.currentQuestionIndex,
-        answers: action.data.answers,
-      };
-
     case actions.quiz.LOAD_PROGRESS:
       return {
         ...state,
