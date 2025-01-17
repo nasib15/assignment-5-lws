@@ -70,7 +70,7 @@
 1. **Clone the repository:**
 
    ```
-   git clone https://github.com/Learn-with-Sumit/batch-2-assignment-5-quiz-application-nasib15
+   git clone https://github.com/nasib15/assignment-5-lws
    ```
 
 2. **Install the dependencies:**
