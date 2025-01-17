@@ -70,7 +70,8 @@
 1. **Clone the repository:**
 
    ```
-   git clone https://github.com/nasib15/assignment-5-lws
+   git clone https://github.com/nasib15/assignment-5-lws.git
+   cd assignment-5-lws
    ```
 
 2. **Install the dependencies:**
